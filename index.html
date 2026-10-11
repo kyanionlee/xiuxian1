@@ -3491,7 +3491,7 @@ for(const [cls,pool]of Object.entries(V7_POOLS)){
 for(const k of ['pact','toxin','contagion']){const id='du_'+k;if(!SK[id]){def(id,{...SK[k],id,name:'毒师·'+SK[k].name,sourcePassive:k});V7_PASSIVES.du.push(id);V7_OWNER[id]='du';}}
 SK.gu.evo.pair='du_pact';SK.rot.evo.pair='du_contagion';SK.miasma.evo.pair='du_toxin';SK.du_seed.evo.pair='du_toxin';
 
-const SHANHAI_VERSION = '1.4.0';
+const SHANHAI_VERSION = '1.5.0';
 const SAVE_KEY = 'yjwx-save-stable', BACKUP_KEY = 'yjwx-save-previous';
 const META_DEFAULT = JSON.parse(JSON.stringify(META));
 const clone = o => JSON.parse(JSON.stringify(o));
@@ -3590,7 +3590,7 @@ async function previewImport(){try{const value=$('import-code').value;importCand
 
 /* Readable title and world atlas */
 showTitle=function(){state='title';STAGE=null;MEV=null;inEncounter=false;$('hud').hidden=true;$('boss').hidden=true;advanceEl.hidden=true;
-  showOverlay(`<div class="panel title-panel"><div class="title-top"><span class="eyebrow">YU JIAN WEN XIAN / 01</span><span class="chapter-tag">山 海 纪 · 问道篇 v1.4.0</span></div><h1>御剑问仙<span>山 海 纪</span></h1><p class="story">踏遍青山，问道长生。<br>一柄剑，一卷山海，一场由你选择的修行。</p><div class="title-numbers"><div><b>09</b>地域路线</div><div><b>36</b>地域奇遇</div><div><b>06</b>可结交故人</div></div><div class="actions">${checkpoint?btn('continue','继续修行 →',null,''):btn('setup','执剑入山 →')}${checkpoint?btn('new-confirm','新的轮回',null,'ghost'):''}${btn('meta','轮回殿',null,'ghost')}${btn('savehub','存档与恢复',null,'ghost')}${btn('journal','山海奇遇录',null,'ghost')}</div><p class="help">WASD / 方向键移动 · 自动攻击 · F 提前迎战 · P 暂停<br>手机：按住战场拖动。战斗与地图自动保存。</p>${isWeChat?'<div class="notice" style="max-width:500px">微信临时页面可能丢失本地存档。关闭前请到「存档与恢复」复制存档码，或使用固定网址在浏览器打开。</div>':''}${toggles()}<p class="help">${META.runs||0} 次轮回 · ${META.wins||0} 次飞升 · 轮回点 ${META.pts||0}</p></div>`);
+  showOverlay(`<div class="panel title-panel"><div class="title-top"><span class="eyebrow">YU JIAN WEN XIAN / 01</span><span class="chapter-tag">山 海 纪 · 问道篇 v1.5.0</span></div><h1>御剑问仙<span>山 海 纪</span></h1><p class="story">踏遍青山，问道长生。<br>一柄剑，一卷山海，一场由你选择的修行。</p><div class="title-numbers"><div><b>09</b>地域路线</div><div><b>36</b>地域奇遇</div><div><b>06</b>可结交故人</div></div><div class="actions">${checkpoint?btn('continue','继续修行 →',null,''):btn('setup','执剑入山 →')}${checkpoint?btn('new-confirm','新的轮回',null,'ghost'):''}${btn('meta','轮回殿',null,'ghost')}${btn('savehub','存档与恢复',null,'ghost')}${btn('journal','山海奇遇录',null,'ghost')}</div><p class="help">WASD / 方向键移动 · 自动攻击 · F 提前迎战 · P 暂停<br>手机：按住战场拖动。战斗与地图自动保存。</p>${isWeChat?'<div class="notice" style="max-width:500px">微信临时页面可能丢失本地存档。关闭前请到「存档与恢复」复制存档码，或使用固定网址在浏览器打开。</div>':''}${toggles()}<p class="help">${META.runs||0} 次轮回 · ${META.wins||0} 次飞升 · 轮回点 ${META.pts||0}</p></div>`);
 };
 const REGIONS=[
  {name:'青竹林',sub:'竹海 · 云台 · 灵泉',color:'#83cbb0',intro:'群峰藏于薄雾，竹海通向古老仙门。循溪寻药、听琴悟道，也可探访云间灵兽。',areas:['听雨竹径','碧泉渡','栖鹤峰','青云台'],landmarks:['竹隐小径','听雨亭','灵泉涧','栖鹤台','云隐观','青石桥','百草坞','望月坡','山神祠','剑冢','伏妖坪','青云峰']},
@@ -4563,6 +4563,100 @@ document.addEventListener('click', e => {
   else if (a === 'k-arcc') chooseArc(k);
 }, true);
 kmeta();
+
+
+/* ================================================================
+   配乐模块（v1.5，Claude）：场景配乐、交叉淡化、按需加载
+   曲目放在 assets/music/；任一曲目加载失败时，自动退回原有的合成古筝。
+   ================================================================ */
+const MUSIC_BASE = 'assets/music/';
+const MUSIC_VOL = 0.55, MUSIC_FADE = 1.8, MUSIC_LOOP_XF = 2.5;
+const MUSIC = { cur:null, want:null, a:null, b:null, unlocked:false, failed:{}, playing:false };
+function musicScene(){
+  const sc = (P && P.scene) || (RUN && CHAPTERS[RUN.ch] && CHAPTERS[RUN.ch].scene) || 'bamboo';
+  return ['bamboo', 'desert', 'underworld'].includes(sc) ? sc : 'bamboo';
+}
+function musicWant(){
+  const s = state;
+  if (s === 'win') return 'ending';
+  if (['story', 'dream', 'arc', 'local-story', 'ending-choice', 'over'].includes(s)) return 'story';
+  if (STAGE && ['play', 'pause', 'levelup', 'event', 'bingjie'].includes(s)){
+    const boss = STAGE.obj === 'boss' || (STAGE.boss && !STAGE.boss.dead);
+    return boss ? 'battle_boss' : 'battle_' + musicScene();
+  }
+  if (!P || !RUN || ['title', 'setup', 'meta', 'savehub', 'journal'].includes(s)) return 'title';
+  return 'map_' + musicScene();
+}
+// iOS 的 Safari 不允许网页直接改音量，所以经 Web Audio 增益节点控制；本地 file:// 打开时退回 el.volume
+function musicEl(){
+  const el = new Audio(); el.preload = 'auto'; el.loop = false; el.crossOrigin = 'anonymous';
+  el.addEventListener('error', () => { if (el.dataset.track) MUSIC.failed[el.dataset.track] = true; });
+  try {
+    if (location.protocol !== 'file:' && SFX.ctx){ const src = SFX.ctx.createMediaElementSource(el), g = SFX.ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(SFX.ctx.destination); el._gain = g; }
+  } catch (e) { el._gain = null; }
+  if (!el._gain) el.volume = 0;
+  return el;
+}
+const getVol = el => el._gain ? el._gain.gain.value : el.volume;
+const setVol = (el, v) => { v = Math.max(0, Math.min(1, v)); if (el._gain) el._gain.gain.value = v; else el.volume = v; };
+const musicOn = () => !META.muted && META.bgm !== false;
+function musicFade(el, to, sec, done){
+  if (!el) return;
+  const from = getVol(el), t0 = performance.now();
+  clearInterval(el._fade);
+  el._fade = setInterval(() => {
+    const k = Math.min(1, (performance.now() - t0) / (sec * 1000));
+    try { setVol(el, from + (to - from) * k); } catch (e) {}
+    if (k >= 1){ clearInterval(el._fade); if (done) done(); }
+  }, 50);
+}
+function musicStart(track){
+  const el = MUSIC.a && !MUSIC.a.paused && MUSIC.a.dataset.track ? (MUSIC.b ||= musicEl()) : (MUSIC.a ||= musicEl());
+  const old = el === MUSIC.a ? MUSIC.b : MUSIC.a;
+  el.dataset.track = track;
+  if (!el.src || !el.src.endsWith(track + '.mp3')) el.src = MUSIC_BASE + track + '.mp3';
+  try { el.currentTime = 0; } catch (e) {}
+  setVol(el, 0);
+  const p = el.play();
+  if (p && p.catch) p.catch(() => { MUSIC.playing = false; });
+  musicFade(el, MUSIC_VOL, MUSIC_FADE);
+  if (old && !old.paused) musicFade(old, 0, MUSIC_FADE, () => { try { old.pause(); } catch (e) {} });
+  MUSIC.cur = track; MUSIC.playing = true;
+}
+function musicStop(){
+  for (const el of [MUSIC.a, MUSIC.b]) if (el && !el.paused) musicFade(el, 0, 0.8, () => { try { el.pause(); } catch (e) {} });
+  MUSIC.cur = null; MUSIC.playing = false;
+}
+function musicTick(){
+  if (!MUSIC.unlocked || document.hidden) return;
+  if (!musicOn()){ if (MUSIC.cur) musicStop(); return; }
+  const want = musicWant();
+  if (MUSIC.failed[want]){ if (MUSIC.cur) musicStop(); return; }
+  if (want !== MUSIC.cur){ musicStart(want); return; }
+  const el = [MUSIC.a, MUSIC.b].find(e => e && !e.paused && e.dataset.track === MUSIC.cur);
+  if (el && el.duration && el.duration - el.currentTime < MUSIC_LOOP_XF) musicStart(MUSIC.cur);
+}
+const musicActive = () => MUSIC.unlocked && musicOn() && !MUSIC.failed[musicWant()];
+const _bgmTickM = bgmTick;
+bgmTick = function(){ if (musicActive()) return; return _bgmTickM(); };
+function musicUnlock(){
+  if (MUSIC.unlocked) return;
+  MUSIC.unlocked = true;
+  try { audioInit(); } catch (e) {}
+  MUSIC.a ||= musicEl(); MUSIC.b ||= musicEl();
+  // 在用户手势内先把备用播放器「激活」一次，iOS 之后才允许它自动播放（交叉淡化要用）
+  const b = MUSIC.b, t = musicWant();
+  try { b.src = MUSIC_BASE + t + '.mp3'; b.dataset.track = t; b.muted = true; const p = b.play();
+    if (p && p.then) p.then(() => { b.pause(); b.muted = false; }).catch(() => { b.muted = false; }); else { b.pause(); b.muted = false; } } catch (e) { b.muted = false; }
+  musicTick();
+}
+addEventListener('pointerdown', musicUnlock, { capture:true });
+addEventListener('keydown', musicUnlock, { capture:true });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden){ for (const el of [MUSIC.a, MUSIC.b]) if (el && !el.paused){ el._resume = true; try { el.pause(); } catch (e) {} } }
+  else for (const el of [MUSIC.a, MUSIC.b]) if (el && el._resume){ el._resume = false; const p = el.play(); if (p && p.catch) p.catch(() => {}); }
+});
+setInterval(musicTick, 400);
 
 showTitle();
 window.gameBootReady();

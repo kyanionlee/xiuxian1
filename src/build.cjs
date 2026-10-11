@@ -21,5 +21,9 @@ patch('showTitle();\nrequestAnimationFrame(frame);',['guide.js','ux.js'].map(f=>
 patch("const SHANHAI_VERSION = '1.3.0';","const SHANHAI_VERSION = '1.4.0';");
 patch('战斗传承篇 v1.3.0','问道篇 v1.4.0');
 patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'karma.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+// v1.5.0 配乐模块（Claude）：放在 karma.js 之后，曲目文件在仓库 assets/music/。
+patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'music.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+patch("const SHANHAI_VERSION = '1.4.0';","const SHANHAI_VERSION = '1.5.0';");
+patch('问道篇 v1.4.0','问道篇 v1.5.0');
 const art=path.join(__dirname,'assets/npc-portraits.webp');h=h.replace('__NPC_PORTRAITS__','data:image/webp;base64,'+fs.readFileSync(art).toString('base64'));
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));

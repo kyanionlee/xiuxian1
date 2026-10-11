@@ -3,7 +3,7 @@ const {chromium}=require('playwright'),{pathToFileURL}=require('url'),path=requi
 (async()=>{const browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:360,height:640}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
 await page.goto(pathToFileURL(path.resolve('index.html')).href);
 const checks=await page.evaluate(()=>{const out=[],ok=(name,v)=>out.push({name,pass:!!v});
-ok('boot completes',document.getElementById('boot-status').hidden);ok('version',overlay.textContent.includes('问道篇 v1.4.0'));
+ok('boot completes',document.getElementById('boot-status').hidden);ok('version',overlay.textContent.includes('问道篇 v1.5.0'));ok('music module',typeof musicWant==='function'&&typeof MUSIC==='object'&&musicWant()==='title');
 setupSel.cls='jian';newRun('jian',0);showMap();showStoryBook();ok('karma book',overlay.textContent.includes('因果簿'));
 showPerson('yun');ok('arc locked',overlay.textContent.includes('好感达到 15'));addContact('yun',20);showPerson('yun');ok('arc unlocked',!!overlay.querySelector('[data-act="k-arc"]'));showArc('yun');chooseArc('yun:0');ok('arc choice',kmeta().arcs.yun===1&&jk().xin.ren===1);chooseArc('yun:0');ok('arc cannot repeat',jk().xin.ren===1);showPerson('yun');ok('one arc per life',!overlay.querySelector('[data-act="k-arc"]'));
 addContact('yun',20);journey().ending='bridge';gameOver(true);ok('ending report',overlay.textContent.includes('因果 · 第'));const life=kmeta().life,bond=bondOf('yun');gameOver(true);ok('no duplicate karma award',bondOf('yun')===bond);ok('memory unlocked',kmeta().mem.includes(1)&&kmeta().pendingDream===1);
