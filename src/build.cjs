@@ -18,7 +18,8 @@ patch("for (const t of texts){ c.globalAlpha = 1 - t.t / 0.7; c.fillStyle = t.he
 patch('showTitle();\nrequestAnimationFrame(frame);',fs.readFileSync(path.join(__dirname,'combat.js'),'utf8')+'\nshowTitle();\nrequestAnimationFrame(frame);');
 patch('</style>',['style.css','readability.css'].map(f=>fs.readFileSync(path.join(__dirname,f),'utf8')).join('\n')+'\n</style>');
 patch('showTitle();\nrequestAnimationFrame(frame);',['guide.js','ux.js'].map(f=>fs.readFileSync(path.join(__dirname,f),'utf8')).join('\n')+'\nshowTitle();\nwindow.gameBootReady();\nrequestAnimationFrame(frame);');
-patch("const SHANHAI_VERSION = '1.3.0';","const SHANHAI_VERSION = '1.3.1';");
-patch('战斗传承篇 v1.3.0','战斗传承篇 v1.3.1');
+patch("const SHANHAI_VERSION = '1.3.0';","const SHANHAI_VERSION = '1.4.0';");
+patch('战斗传承篇 v1.3.0','问道篇 v1.4.0');
+patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'karma.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
 const art=path.join(__dirname,'assets/npc-portraits.webp');h=h.replace('__NPC_PORTRAITS__','data:image/webp;base64,'+fs.readFileSync(art).toString('base64'));
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));
