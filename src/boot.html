@@ -1,0 +1,13 @@
+<div id="boot-status" role="status" style="position:fixed;inset:0;z-index:300;background:#102d33;color:#fff4db;padding:15vh 24px;text-align:center;font:18px/1.8 sans-serif">
+<h2 style="font:inherit;font-size:28px">正在展开山海画卷</h2><p id="boot-message">首次载入需要下载完整游戏，请稍候。</p>
+<button onclick="location.reload()" style="padding:12px 24px;background:#e6ca88;color:#142b2b;border:0;font-size:17px">重新加载</button>
+<p style="font-size:15px">若长时间没有进入，请复制当前网址到 Safari 或 Chrome 打开。不要清除浏览器数据，以免丢失本地存档。</p>
+</div>
+<script>
+(function(){
+ var box=document.getElementById('boot-status'),msg=document.getElementById('boot-message');
+ window.gameBootReady=function(){box.hidden=true;};
+ window.addEventListener('error',function(e){if(!box.hidden)msg.textContent='启动未完成：'+(e.message||'浏览器未能加载游戏')+'。请重新加载，或使用系统浏览器打开。';});
+ setTimeout(function(){if(!box.hidden)msg.textContent='载入时间较长，可能是网络中断或浏览器不兼容。请尝试重新加载或在系统浏览器打开。';},20000);
+})();
+</script>

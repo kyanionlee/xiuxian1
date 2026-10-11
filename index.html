@@ -230,9 +230,48 @@ body{font-family:'Microsoft YaHei','PingFang SC',sans-serif}h1,h2,h3,.kai,.glyph
 .npc-portrait{display:block;width:100%;aspect-ratio:1/1.08;object-fit:cover;border-radius:12px;border:1px solid #d4b36b55;background:#153536}.portrait-dialog{display:grid;grid-template-columns:minmax(200px,34%) 1fr;gap:24px;align-items:start}.portrait-dialog .npc-portrait{position:sticky;top:12px}.tree-columns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;text-align:left}.tree-node{border:1px solid #718b8455;border-radius:12px;padding:16px;margin:14px 0;background:#112e32}.tree-node.learned{border-color:#dbbd76;background:#29423a}.tree-node.locked{opacity:.6}.tree-icon{display:inline-grid;place-items:center;width:46px;height:46px;border:1px solid #c8ae68;border-radius:50%;font-size:25px;color:#ead19a}.tree-node p{font-size:14px;line-height:1.7}.tree-node small{display:block;color:#c2d1c8}.tree-node .btn{width:100%;margin-top:12px}.battle-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}.encounter-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.encounter-paths .card{min-height:180px}.combat-toast{pointer-events:none}.v7-combat-note{color:#e3cf9d;font-size:15px;padding:10px;line-height:1.6}#v7-tree-btn{position:fixed;right:18px;top:135px;z-index:8;min-height:44px;background:#14363ae8;border:1px solid #d9bd76;color:#e9d8ac;border-radius:9px;padding:9px 13px}body.in-combat #save-chip{opacity:.65}
 @media(max-width:700px){.portrait-dialog{grid-template-columns:1fr!important;gap:14px}.portrait-dialog .npc-portrait{position:static;width:100%;max-height:310px;object-fit:cover;object-position:50% 25%}.tree-columns{grid-template-columns:1fr 1fr;gap:8px}.tree-node{padding:12px}.tree-columns h3{font-size:18px!important}.tree-node .btn{font-size:14px!important}.encounter-paths{grid-template-columns:1fr}.battle-settings{grid-template-columns:1fr}#hud{padding:8px 12px!important;min-height:95px!important;pointer-events:none}#hud button{pointer-events:auto;min-width:46px;min-height:46px}#realm{font-size:20px!important}#info{gap:9px!important;flex-wrap:wrap;font-size:14px}#skills{max-height:55px;overflow:hidden}#skills span{font-size:13px}#v7-tree-btn{top:120px;right:12px;font-size:14px}#advance{right:12px;bottom:calc(25px + env(safe-area-inset-bottom))!important;max-width:46vw!important}#advance small{display:none}#boss{bottom:105px!important;max-width:72vw}.worldsvg{touch-action:pan-x}.journey-card .npc-portrait{max-height:330px;object-position:50% 20%}}
 
+/* Explicit foreground/background pairs prevent .btn + .card theme collisions. */
+.completion-note{background:#20494d;color:#fff4db;border:1px solid #86a69c;padding:12px;border-radius:8px;font-size:17px;line-height:1.5}
+.card,.btn.card,.pickc,.good,.item,.detail{background:#173b40;color:#fff4db;border-color:#789c9b}
+.card .d,.card small,.pickc span,.detail small{color:#dfebe5;opacity:1}
+.card b,.card .t,.btn.card small{color:inherit;opacity:1}
+.card em,.pickc em{color:#ffda8f;opacity:1}
+.btn:not(.card):not(.ghost):not(.red){background:#e6ca88;color:#142b2b}
+.btn.ghost{background:#173b40;color:#fff4db;border-color:#789c9b}
+.btn.red{background:#873e31;color:#fff5e4;border-color:#dfac8e}
+.btn small{opacity:1;color:inherit}
+.btn:disabled,.pickc:disabled,.pickable:disabled,button.card:disabled{opacity:1!important;background:#263b40!important;color:#cbd8d5!important;border:1px dashed #829995!important;filter:none!important;box-shadow:none;cursor:not-allowed}
+button:disabled small,button:disabled b,button:disabled em,button:disabled span{opacity:1!important;color:inherit!important}
+.tree-node.locked{opacity:1;background:#142b30;border-style:dashed}
+.tree-node small{color:#d3e1db}.card kbd{opacity:1;color:#d3e1db}
+.encounter-paths .btn.card{display:flex;flex-direction:column;align-items:stretch;justify-content:center;text-align:left;min-height:148px;gap:12px;padding:22px!important;line-height:1.5;font-weight:700;font-size:20px;letter-spacing:0}
+.encounter-paths .btn.card small{font-size:16px!important;line-height:1.7;font-weight:400}
+.encounter-paths .btn.card::before{inset:6px;border-color:#91b1a6;opacity:.5}
+.btn:focus-visible,.card:focus-visible,.pickc:focus-visible{outline:3px solid #ffdb8f;outline-offset:3px}
+#guide-layer{position:fixed;inset:0;z-index:150;background:#031519ed;overflow:auto;padding:24px 14px calc(30px + env(safe-area-inset-bottom));box-sizing:border-box;overscroll-behavior:contain;color:#fff4db}
+#guide-layer[hidden]{display:none}#guide-layer .guide-panel{max-width:720px;margin:0 auto;padding:28px;background:#102d33;border:1px solid #86a69c;border-radius:16px;text-align:left}
+#guide-layer h2{font-size:30px;line-height:1.4;margin:16px 0}#guide-layer p,#guide-layer li{font-size:17px;line-height:1.8;color:#e1ece6}#guide-layer ol{padding-left:24px}#guide-layer .guide-top{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#ffda8f}#guide-layer .guide-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}#guide-layer .guide-tabs button{flex:1 0 28%;min-height:44px;padding:8px;font-size:15px}#guide-layer .guide-tabs [aria-current=true]{background:#e6ca88;color:#142b2b;border:2px solid #ffedc0}#guide-layer .guide-visual{display:flex;gap:12px;align-items:center;justify-content:center;min-height:96px;padding:18px;background:#20494d;border:1px solid #739b91;border-radius:12px;font-size:28px;color:#ffdf9a;text-align:center}#guide-layer .guide-visual span{font-size:17px;line-height:1.6}#guide-layer .guide-tip{border-left:3px solid #e6ca88;background:#1c4145;padding:12px 16px}#guide-layer .actions{justify-content:space-between}#guide-layer button{min-height:46px}
+@media(max-width:700px){.encounter-paths .btn.card{min-height:132px!important;font-size:20px!important}.encounter-paths{gap:14px}.tree-columns .tree-node{min-width:0}#guide-layer .guide-panel{padding:20px 16px}#guide-layer h2{font-size:26px}#guide-layer .guide-top .btn{padding:10px 12px;font-size:15px}#guide-layer .guide-visual{font-size:24px;gap:8px}}
+@media(max-width:430px){.encounter-paths .btn.card{min-height:0!important;padding:14px 16px!important;gap:5px;font-size:18px!important}.encounter-paths .btn.card small{font-size:15px!important;line-height:1.5}.panel{padding:20px 14px!important}.panel h2{font-size:30px!important}.story{font-size:16px!important;line-height:1.65!important;margin-top:12px!important}.actions{gap:8px!important}.story-choice{padding:12px!important;min-height:44px}.btn{white-space:normal!important;overflow-wrap:anywhere}.portrait-dialog .npc-portrait{max-height:190px}.cards .card{padding:12px!important;min-height:0!important}.karma-row{display:grid!important;grid-template-columns:1fr}.karma-dim{opacity:1!important;color:#c7d8d3}.completion-note{font-size:16px}}
+@media(max-width:430px){.event-art{height:96px!important;min-height:96px!important;margin:8px 0!important}.event-art svg{height:88px!important}.event-label b{font-size:25px!important}.journey-kicker{margin:6px 0!important}.encounter-paths{gap:9px!important}.encounter-paths .btn.card{padding:11px 14px!important}}
+
 </style>
 </head>
 <body>
+<div id="boot-status" role="status" style="position:fixed;inset:0;z-index:300;background:#102d33;color:#fff4db;padding:15vh 24px;text-align:center;font:18px/1.8 sans-serif">
+<h2 style="font:inherit;font-size:28px">正在展开山海画卷</h2><p id="boot-message">首次载入需要下载完整游戏，请稍候。</p>
+<button onclick="location.reload()" style="padding:12px 24px;background:#e6ca88;color:#142b2b;border:0;font-size:17px">重新加载</button>
+<p style="font-size:15px">若长时间没有进入，请复制当前网址到 Safari 或 Chrome 打开。不要清除浏览器数据，以免丢失本地存档。</p>
+</div>
+<script>
+(function(){
+ var box=document.getElementById('boot-status'),msg=document.getElementById('boot-message');
+ window.gameBootReady=function(){box.hidden=true;};
+ window.addEventListener('error',function(e){if(!box.hidden)msg.textContent='启动未完成：'+(e.message||'浏览器未能加载游戏')+'。请重新加载，或使用系统浏览器打开。';});
+ setTimeout(function(){if(!box.hidden)msg.textContent='载入时间较长，可能是网络中断或浏览器不兼容。请尝试重新加载或在系统浏览器打开。';},20000);
+})();
+</script>
+
 <canvas id="c"></canvas>
 <div id="hud" hidden>
   <div class="row">
@@ -269,7 +308,7 @@ function readTheme(){
   C.dark = darkMQ.matches; C.bone = '#f1eadb'; C.pale = '#a9bfa2';
   C.rar = [C.stone, C.jade, C.spirit, C.violet, C.gold];
 }
-readTheme(); darkMQ.addEventListener('change', readTheme);
+readTheme(); if(darkMQ.addEventListener)darkMQ.addEventListener('change',readTheme);else if(darkMQ.addListener)darkMQ.addListener(readTheme);
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const randi = (a, b) => Math.floor(rand(a, b + 1));
@@ -3452,7 +3491,7 @@ for(const [cls,pool]of Object.entries(V7_POOLS)){
 for(const k of ['pact','toxin','contagion']){const id='du_'+k;if(!SK[id]){def(id,{...SK[k],id,name:'毒师·'+SK[k].name,sourcePassive:k});V7_PASSIVES.du.push(id);V7_OWNER[id]='du';}}
 SK.gu.evo.pair='du_pact';SK.rot.evo.pair='du_contagion';SK.miasma.evo.pair='du_toxin';SK.du_seed.evo.pair='du_toxin';
 
-const SHANHAI_VERSION = '1.3.0';
+const SHANHAI_VERSION = '1.3.1';
 const SAVE_KEY = 'yjwx-save-stable', BACKUP_KEY = 'yjwx-save-previous';
 const META_DEFAULT = JSON.parse(JSON.stringify(META));
 const clone = o => JSON.parse(JSON.stringify(o));
@@ -3551,7 +3590,7 @@ async function previewImport(){try{const value=$('import-code').value;importCand
 
 /* Readable title and world atlas */
 showTitle=function(){state='title';STAGE=null;MEV=null;inEncounter=false;$('hud').hidden=true;$('boss').hidden=true;advanceEl.hidden=true;
-  showOverlay(`<div class="panel title-panel"><div class="title-top"><span class="eyebrow">YU JIAN WEN XIAN / 01</span><span class="chapter-tag">山 海 纪 · 战斗传承篇 v1.3.0</span></div><h1>御剑问仙<span>山 海 纪</span></h1><p class="story">踏遍青山，问道长生。<br>一柄剑，一卷山海，一场由你选择的修行。</p><div class="title-numbers"><div><b>09</b>地域路线</div><div><b>36</b>地域奇遇</div><div><b>06</b>可结交故人</div></div><div class="actions">${checkpoint?btn('continue','继续修行 →',null,''):btn('setup','执剑入山 →')}${checkpoint?btn('new-confirm','新的轮回',null,'ghost'):''}${btn('meta','轮回殿',null,'ghost')}${btn('savehub','存档与恢复',null,'ghost')}${btn('journal','山海奇遇录',null,'ghost')}</div><p class="help">WASD / 方向键移动 · 自动攻击 · F 提前迎战 · P 暂停<br>手机：按住战场拖动。战斗与地图自动保存。</p>${isWeChat?'<div class="notice" style="max-width:500px">微信临时页面可能丢失本地存档。关闭前请到「存档与恢复」复制存档码，或使用固定网址在浏览器打开。</div>':''}${toggles()}<p class="help">${META.runs||0} 次轮回 · ${META.wins||0} 次飞升 · 轮回点 ${META.pts||0}</p></div>`);
+  showOverlay(`<div class="panel title-panel"><div class="title-top"><span class="eyebrow">YU JIAN WEN XIAN / 01</span><span class="chapter-tag">山 海 纪 · 战斗传承篇 v1.3.1</span></div><h1>御剑问仙<span>山 海 纪</span></h1><p class="story">踏遍青山，问道长生。<br>一柄剑，一卷山海，一场由你选择的修行。</p><div class="title-numbers"><div><b>09</b>地域路线</div><div><b>36</b>地域奇遇</div><div><b>06</b>可结交故人</div></div><div class="actions">${checkpoint?btn('continue','继续修行 →',null,''):btn('setup','执剑入山 →')}${checkpoint?btn('new-confirm','新的轮回',null,'ghost'):''}${btn('meta','轮回殿',null,'ghost')}${btn('savehub','存档与恢复',null,'ghost')}${btn('journal','山海奇遇录',null,'ghost')}</div><p class="help">WASD / 方向键移动 · 自动攻击 · F 提前迎战 · P 暂停<br>手机：按住战场拖动。战斗与地图自动保存。</p>${isWeChat?'<div class="notice" style="max-width:500px">微信临时页面可能丢失本地存档。关闭前请到「存档与恢复」复制存档码，或使用固定网址在浏览器打开。</div>':''}${toggles()}<p class="help">${META.runs||0} 次轮回 · ${META.wins||0} 次飞升 · 轮回点 ${META.pts||0}</p></div>`);
 };
 const REGIONS=[
  {name:'青竹林',sub:'竹海 · 云台 · 灵泉',color:'#83cbb0',intro:'群峰藏于薄雾，竹海通向古老仙门。循溪寻药、听琴悟道，也可探访云间灵兽。',areas:['听雨竹径','碧泉渡','栖鹤峰','青云台'],landmarks:['竹隐小径','听雨亭','灵泉涧','栖鹤台','云隐观','青石桥','百草坞','望月坡','山神祠','剑冢','伏妖坪','青云峰']},
@@ -4170,7 +4209,35 @@ const journalV7=showJournal;showJournal=function(){journalV7();const sub=overlay
 
 function encounterStoryV7(e){return ({sequence:'风声中夹着求救的传音。一位受困修士请你疏导灵脉，林中的守护妖物却已被惊动。',pipes:'断裂的水渠截住了灵泉。你可以雇人疏导灵脉，也可以击败盘踞泉眼的妖将，拿走它守护的材料。',memory:'药圃的主人受了伤，药童正在抢救残存灵草。帮助他们稳住灵脉，或深入药圃驱逐妖物，都能带回收获。',balance:'此地灵气逆流，闭关的修士不敢出定。花费灵石请人稳住灵脉，或迎战引发异变的守护者，由你决定。',catch:'灵物循着光芒逃进妖物领地。你可以布下灵石诱回它们，也可以闯入领地迎战，或者只收集路边遗落的材料。',route:'前路被守护妖物盘踞。同行修士愿意收取灵石开辟安全通路；若有把握，也可以正面迎战，取走更多遗珍。',timing:'古老法器正在苏醒，逸散的灵力引来了守护者。可请人封住灵脉稳妥取宝，也可迎战它，独取深处的珍藏。'})[e.mode]||'此地灵力流动，前路有多种选择。';}
 
+/* Presentation-only handbook; no change to combat, drops or progression rules. */
+const GUIDE131=[
+ {tab:'怎么移动',title:'你负责走位，角色自动攻击',art:'✥ <span>拖动移动<br>自动出招</span> → ◇',steps:['电脑用 WASD 或方向键；手机按住战场拖动。','靠近妖物进入攻击范围即可自动出招，不需要连点攻击。','危险区域亮起时先离开，再回来输出。'],tip:'暂停 → 操作与画面，可以切换固定左下摇杆、关闭震动或开启清晰战场。'},
+ {tab:'升级选技',title:'捡灵气，突破后选一个成长方向',art:'◇ ◇ → <span>修为积累</span> → ↑',steps:['打败妖物后，靠近发光的灵气结晶即可吸收。','突破时从三个选项中选一个：学新招或提高已有技能。','职业技能树可在地图或暂停菜单打开。新招可能需要更高境界和前置技能二重。'],tip:'主动研习先用研习点，不足时消耗属性点。不要把所有点数当成免费技能点。'},
+ {tab:'过关目标',title:'先看目标，再决定站在哪里',art:'<span>坚守 / 清剿<br>守阵 / 斩将 / 伏魔</span>',steps:['屏幕上方显示本关目标。坚守应对兽潮，清剿击败足够妖物，斩将或伏魔击败指定敌人。','守阵要保护阵眼：红色标记妖物会攻击阵眼，跑远不能保住它。','首领攻击有范围和倒计时，优先避开危险区域。'],tip:'右下角鸣钟可以提前迎战，但也会更早带来敌人。新手先稳住当前局面，不必每次都按。'},
+ {tab:'地图与行囊',title:'选路线，整理装备，再出发',art:'<span>地图选路</span> → <span>行囊整备</span> → ⚔',steps:['地图上只有可通行节点能进入；每章首个节点前可以选择地域路线。','行囊可换装备和使用物资。武器必须属于本职业；战斗中先暂停再操作。','低品阶装备可预览一键分解；珍贵装备可以锁定。人物与同行里可交谈、接委托和邀请已熟悉的故人。'],tip:'奇遇会写明消耗与奖励。看清代价再选择，不想冒险就选择稳妥或少量收益的路线。'},
+ {tab:'存档与备份',title:'自动保存，也给自己留一份备份',art:'<span>自动保存</span> → <span>导出备份</span> → <span>导入恢复</span>',steps:['战斗每 5 秒及暂停时保存，完成节点回到地图后也会保存。','商店和奇遇请完成操作并返回地图；中途退出可能回到最近检查点。','首页「存档与恢复」或暂停「存档与备份」可以导出、复制存档码和导入。'],tip:'目前没有账号云存档。微信清理数据、换浏览器或换设备前，请把备份保存到游戏外。'},
+ {tab:'随时重看',title:'第一轮，先学会活下来',art:'<span>躲预警</span> → <span>捡灵气</span> → <span>看目标</span>',steps:['遇到压力先走位，不要站在危险范围内硬打。','守阵优先清理攻阵妖物；状态不好时别急着鸣钟。','首页、地图和战斗暂停菜单都有「新手指引」，随时可以重看。'],tip:'这是操作手册，不会替你花资源、改变职业或重置存档。现在可以回去开始修行。'}
+];
+let guideContext131=null,guideIndex131=0;
+const guideLayer131=document.createElement('div');guideLayer131.id='guide-layer';guideLayer131.hidden=true;guideLayer131.setAttribute('role','dialog');guideLayer131.setAttribute('aria-modal','true');guideLayer131.setAttribute('aria-labelledby','guide-heading');document.body.appendChild(guideLayer131);
+function showGuide131(i=0,first=false){if(guideContext131)return;if(state==='play')pause();guideContext131={state,focus:document.activeElement,first};state='guide';joy=null;guideIndex131=i;overlay.inert=true;renderGuide131();}
+function renderGuide131(){const g=GUIDE131[guideIndex131];guideLayer131.hidden=false;guideLayer131.innerHTML=`<section class="guide-panel"><div class="guide-top"><span>新手指引 · ${guideIndex131+1} / ${GUIDE131.length}</span><button class="btn ghost" data-guide="close">${guideContext131.first?'跳过指引':'关闭指引'}</button></div><nav class="guide-tabs" aria-label="指引章节">${GUIDE131.map((g,i)=>`<button class="btn ghost" data-guide="tab" data-page="${i}" aria-current="${i===guideIndex131}">${g.tab}</button>`).join('')}</nav><h2 id="guide-heading" tabindex="-1">${g.title}</h2><div class="guide-visual" aria-hidden="true">${g.art}</div><ol>${g.steps.map(x=>`<li>${x}</li>`).join('')}</ol><p class="guide-tip">${g.tip}</p><div class="actions"><button class="btn ghost" data-guide="prev" ${guideIndex131===0?'disabled':''}>上一步</button><button class="btn" data-guide="next">${guideIndex131===GUIDE131.length-1?'明白了，返回游戏':'下一步'}</button></div></section>`;guideLayer131.scrollTop=0;guideLayer131.querySelector('h2').focus({preventScroll:true});}
+function closeGuide131(){if(!guideContext131)return;const prev=guideContext131;guideContext131=null;guideLayer131.hidden=true;overlay.inert=false;state=prev.state;settings.guideSeen131=true;persist();prev.focus?.focus?.({preventScroll:true});}
+guideLayer131.addEventListener('click',e=>{const b=e.target.closest('[data-guide]');if(!b||b.disabled)return;const a=b.dataset.guide;if(a==='close'||a==='next'&&guideIndex131===GUIDE131.length-1)return closeGuide131();if(a==='next')guideIndex131++;if(a==='prev')guideIndex131--;if(a==='tab'){const i=+b.dataset.page;if(!Number.isInteger(i)||i<0||i>=GUIDE131.length)return;guideIndex131=i;}renderGuide131();});
+document.addEventListener('keydown',e=>{if(!guideContext131)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();return closeGuide131();}if(e.key==='Tab'){const list=[...guideLayer131.querySelectorAll('button:not(:disabled)')],idx=list.indexOf(document.activeElement);if(e.shiftKey&&(idx<=0)||!e.shiftKey&&(idx<0||idx===list.length-1)){e.preventDefault();list[e.shiftKey?list.length-1:0].focus();}}else if(e.target.tagName!=='BUTTON')e.preventDefault();e.stopImmediatePropagation();},true);
+function addGuideButton131(){const area=overlay.querySelector('.world-top .actions')||overlay.querySelector('.panel .actions');if(area&&!area.querySelector('[data-act="guide131"]'))area.insertAdjacentHTML('beforeend',btn('guide131','新手指引',null,'ghost'));}
+for(const entry of ['title','map','pause']){if(entry==='title'){const f=showTitle;showTitle=function(...a){f(...a);addGuideButton131();};}if(entry==='map'){const f=showMap;showMap=function(...a){f(...a);addGuideButton131();};}if(entry==='pause'){const f=pause;pause=function(...a){f(...a);if(state==='pause')addGuideButton131();};}}
+const beginGuide131=beginRun;beginRun=function(...a){beginGuide131(...a);if(!settings.guideSeen131)showGuide131(0,true);};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act="guide131"]');if(!b)return;e.stopImmediatePropagation();showGuide131();},true);
+// Preserve a paused battle when the browser closes while the handbook is open.
+window.addEventListener('pagehide',e=>{if(!guideContext131)return;e.stopImmediatePropagation();const current=state;state=guideContext131.state;if(state==='pause'&&STAGE)captureBattle();state=current;},true);
+
+/* Clear completion feedback; rewards and completion criteria remain unchanged. */
+const uxReward=showReward;
+showReward=function(){uxReward();if(RW&&!RW.fail){const panel=overlay.querySelector('.panel');if(panel&&!panel.querySelector('.completion-note'))panel.insertAdjacentHTML('afterbegin','<p class="completion-note" role="status">✓ 本关目标已完成 · 领取一项奖励后，即可进入下一节点</p>');}};
+
 showTitle();
+window.gameBootReady();
 requestAnimationFrame(frame);
 </script>
 </body>
