@@ -1,0 +1,678 @@
+{
+  "format": "yjwx-shanhai",
+  "schema": 1,
+  "version": "1.2.0",
+  "at": "2026-10-11T10:35:23.583Z",
+  "meta": {
+    "pts": 0,
+    "up": {},
+    "sects": {
+      "jian": true
+    },
+    "best": 0,
+    "runs": 0,
+    "wins": 0,
+    "maxJie": 0,
+    "sfx": true,
+    "bgm": true,
+    "muted": false,
+    "lastSect": "jian",
+    "lastJie": 0,
+    "contacts": {}
+  },
+  "settings": {
+    "fast": true
+  },
+  "checkpoint": {
+    "kind": "battle",
+    "P": {
+      "sect": "jian",
+      "lvl": 1,
+      "xp": 0,
+      "xpNext": 30,
+      "hp": 47,
+      "attr": {
+        "gen": 0,
+        "ling": 0,
+        "shenfa": 0,
+        "wu": 0,
+        "shi": 0,
+        "fu": 0
+      },
+      "attrPts": 0,
+      "sk": {
+        "muku": 1
+      },
+      "evo": {},
+      "eq": {
+        "weapon": {
+          "uid": "r2miwt1",
+          "slot": "weapon",
+          "rar": 0,
+          "ch": 0,
+          "lvl": 0,
+          "base": {},
+          "aff": {},
+          "type": "si",
+          "wd": 11,
+          "cd": 0.8,
+          "name": "牵机丝"
+        },
+        "armor": {
+          "uid": "5g6sdyh",
+          "slot": "armor",
+          "rar": 0,
+          "ch": 0,
+          "lvl": 0,
+          "base": {
+            "hp": 18,
+            "armor": 0.02
+          },
+          "aff": {},
+          "name": "粗布道袍"
+        },
+        "jade": null,
+        "boots": null
+      },
+      "bag": [],
+      "bonus": {},
+      "stones": 123,
+      "rerolls": 0,
+      "revives": 0,
+      "bingjie": false,
+      "soulKills": 0,
+      "beastType": "fox",
+      "seenMev": [],
+      "seenEv": [],
+      "kills": 0,
+      "bosses": 0,
+      "scene": "bamboo",
+      "x": 0,
+      "y": 0,
+      "r": 12,
+      "inv": 0,
+      "walk": 0,
+      "faceA": 0,
+      "atkA": 0,
+      "atkT": 0,
+      "t": {
+        "sword": 0.4,
+        "fist": 0.4,
+        "staff": 0.4,
+        "spear": 0.4,
+        "bow": 0.4,
+        "seal": 0.4,
+        "banner": 0.4,
+        "fire": 0.4,
+        "thunder": 0.4,
+        "aura": 0.4,
+        "ice": 0.4,
+        "wind": 0.4,
+        "meteor": 0.4,
+        "wood": 0.4,
+        "drain": 0.4,
+        "beast": 0.4,
+        "sonic": 0.4,
+        "wolfpack": 0.4,
+        "crows": 0.4,
+        "stoneling": 0.4,
+        "bees": 0.4,
+        "turtle": 0.4,
+        "roc": 0.4,
+        "muku": 0.4,
+        "tieku": 0.4,
+        "nuku": 0.4,
+        "huoku": 0.4,
+        "zhizhu": 0.4,
+        "gu": 0.4,
+        "dart": 0.4,
+        "miasma": 0.4,
+        "rot": 0.4,
+        "zhenyao": 0.4,
+        "hushen": 0.4,
+        "zhenpan": 0.4,
+        "spiritfox": 0.4,
+        "weapon": 0.3
+      },
+      "stormA": 0,
+      "storm": null,
+      "slowT": 0,
+      "cls": "kuilei",
+      "prof": "miner",
+      "farm": 0,
+      "shield": 0,
+      "journey": {
+        "routes": {},
+        "seen": {},
+        "talks": {},
+        "gifts": {},
+        "quests": {},
+        "stock": {},
+        "relics": [],
+        "claims": [],
+        "log": [],
+        "choices": [],
+        "companion": null,
+        "insights": 0
+      }
+    },
+    "RUN": {
+      "ch": 0,
+      "map": {
+        "rows": [
+          [
+            {
+              "id": "0-0",
+              "r": 0,
+              "i": 0,
+              "type": "combat",
+              "x": 0.5,
+              "next": [
+                "1-0",
+                "1-1",
+                "1-2"
+              ],
+              "label": "竹隐小径",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "1-0",
+              "r": 1,
+              "i": 0,
+              "type": "elite",
+              "x": 0.25,
+              "next": [
+                "2-0",
+                "2-1"
+              ],
+              "label": "听雨亭·溪",
+              "eventId": null
+            },
+            {
+              "id": "1-1",
+              "r": 1,
+              "i": 1,
+              "type": "treasure",
+              "x": 0.5,
+              "next": [
+                "2-0",
+                "2-1",
+                "2-2"
+              ],
+              "label": "听雨亭·径",
+              "eventId": null
+            },
+            {
+              "id": "1-2",
+              "r": 1,
+              "i": 2,
+              "type": "shop",
+              "x": 0.75,
+              "next": [
+                "2-1",
+                "2-2"
+              ],
+              "label": "听雨亭·崖",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "2-0",
+              "r": 2,
+              "i": 0,
+              "type": "event",
+              "x": 0.25,
+              "next": [
+                "3-0",
+                "3-1"
+              ],
+              "label": "灵泉涧·溪",
+              "eventId": "region0_6"
+            },
+            {
+              "id": "2-1",
+              "r": 2,
+              "i": 1,
+              "type": "combat",
+              "x": 0.5,
+              "next": [
+                "3-0",
+                "3-1",
+                "3-2"
+              ],
+              "label": "灵泉涧·径",
+              "eventId": null
+            },
+            {
+              "id": "2-2",
+              "r": 2,
+              "i": 2,
+              "type": "event",
+              "x": 0.75,
+              "next": [
+                "3-1",
+                "3-2"
+              ],
+              "label": "灵泉涧·崖",
+              "eventId": "region0_3"
+            }
+          ],
+          [
+            {
+              "id": "3-0",
+              "r": 3,
+              "i": 0,
+              "type": "combat",
+              "x": 0.25,
+              "next": [
+                "4-0",
+                "4-1"
+              ],
+              "label": "栖鹤台·溪",
+              "eventId": null
+            },
+            {
+              "id": "3-1",
+              "r": 3,
+              "i": 1,
+              "type": "elite",
+              "x": 0.5,
+              "next": [
+                "4-0",
+                "4-1",
+                "4-2"
+              ],
+              "label": "栖鹤台·径",
+              "eventId": null
+            },
+            {
+              "id": "3-2",
+              "r": 3,
+              "i": 2,
+              "type": "treasure",
+              "x": 0.75,
+              "next": [
+                "4-1",
+                "4-2"
+              ],
+              "label": "栖鹤台·崖",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "4-0",
+              "r": 4,
+              "i": 0,
+              "type": "shop",
+              "x": 0.25,
+              "next": [
+                "5-0",
+                "5-1"
+              ],
+              "label": "云隐观·溪",
+              "eventId": null
+            },
+            {
+              "id": "4-1",
+              "r": 4,
+              "i": 1,
+              "type": "rest",
+              "x": 0.5,
+              "next": [
+                "5-0",
+                "5-1",
+                "5-2"
+              ],
+              "label": "云隐观·径",
+              "eventId": null
+            },
+            {
+              "id": "4-2",
+              "r": 4,
+              "i": 2,
+              "type": "event",
+              "x": 0.75,
+              "next": [
+                "5-1",
+                "5-2"
+              ],
+              "label": "云隐观·崖",
+              "eventId": "region0_8"
+            }
+          ],
+          [
+            {
+              "id": "5-0",
+              "r": 5,
+              "i": 0,
+              "type": "event",
+              "x": 0.25,
+              "next": [
+                "6-0",
+                "6-1"
+              ],
+              "label": "青石桥·溪",
+              "eventId": "region0_7"
+            },
+            {
+              "id": "5-1",
+              "r": 5,
+              "i": 1,
+              "type": "combat",
+              "x": 0.5,
+              "next": [
+                "6-0",
+                "6-1",
+                "6-2"
+              ],
+              "label": "青石桥·径",
+              "eventId": null
+            },
+            {
+              "id": "5-2",
+              "r": 5,
+              "i": 2,
+              "type": "event",
+              "x": 0.75,
+              "next": [
+                "6-1",
+                "6-2"
+              ],
+              "label": "青石桥·崖",
+              "eventId": "region0_5"
+            }
+          ],
+          [
+            {
+              "id": "6-0",
+              "r": 6,
+              "i": 0,
+              "type": "treasure",
+              "x": 0.25,
+              "next": [
+                "7-0",
+                "7-1"
+              ],
+              "label": "百草坞·溪",
+              "eventId": null
+            },
+            {
+              "id": "6-1",
+              "r": 6,
+              "i": 1,
+              "type": "shop",
+              "x": 0.5,
+              "next": [
+                "7-0",
+                "7-1",
+                "7-2"
+              ],
+              "label": "百草坞·径",
+              "eventId": null
+            },
+            {
+              "id": "6-2",
+              "r": 6,
+              "i": 2,
+              "type": "rest",
+              "x": 0.75,
+              "next": [
+                "7-1",
+                "7-2"
+              ],
+              "label": "百草坞·崖",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "7-0",
+              "r": 7,
+              "i": 0,
+              "type": "event",
+              "x": 0.25,
+              "next": [
+                "8-0",
+                "8-1"
+              ],
+              "label": "望月坡·溪",
+              "eventId": "region0_1"
+            },
+            {
+              "id": "7-1",
+              "r": 7,
+              "i": 1,
+              "type": "event",
+              "x": 0.5,
+              "next": [
+                "8-0",
+                "8-1",
+                "8-2"
+              ],
+              "label": "望月坡·径",
+              "eventId": "region0_2"
+            },
+            {
+              "id": "7-2",
+              "r": 7,
+              "i": 2,
+              "type": "combat",
+              "x": 0.75,
+              "next": [
+                "8-1",
+                "8-2"
+              ],
+              "label": "望月坡·崖",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "8-0",
+              "r": 8,
+              "i": 0,
+              "type": "event",
+              "x": 0.25,
+              "next": [
+                "9-0",
+                "9-1"
+              ],
+              "label": "山神祠·溪",
+              "eventId": "region0_9"
+            },
+            {
+              "id": "8-1",
+              "r": 8,
+              "i": 1,
+              "type": "combat",
+              "x": 0.5,
+              "next": [
+                "9-0",
+                "9-1",
+                "9-2"
+              ],
+              "label": "山神祠·径",
+              "eventId": null
+            },
+            {
+              "id": "8-2",
+              "r": 8,
+              "i": 2,
+              "type": "event",
+              "x": 0.75,
+              "next": [
+                "9-1",
+                "9-2"
+              ],
+              "label": "山神祠·崖",
+              "eventId": "region0_10"
+            }
+          ],
+          [
+            {
+              "id": "9-0",
+              "r": 9,
+              "i": 0,
+              "type": "rest",
+              "x": 0.25,
+              "next": [
+                "10-0",
+                "10-1"
+              ],
+              "label": "剑冢·溪",
+              "eventId": null
+            },
+            {
+              "id": "9-1",
+              "r": 9,
+              "i": 1,
+              "type": "event",
+              "x": 0.5,
+              "next": [
+                "10-0",
+                "10-1",
+                "10-2"
+              ],
+              "label": "剑冢·径",
+              "eventId": "region0_4"
+            },
+            {
+              "id": "9-2",
+              "r": 9,
+              "i": 2,
+              "type": "event",
+              "x": 0.75,
+              "next": [
+                "10-1",
+                "10-2"
+              ],
+              "label": "剑冢·崖",
+              "eventId": "region0_0"
+            }
+          ],
+          [
+            {
+              "id": "10-0",
+              "r": 10,
+              "i": 0,
+              "type": "shop",
+              "x": 0.25,
+              "next": [
+                "11-0"
+              ],
+              "label": "伏妖坪·溪",
+              "eventId": null
+            },
+            {
+              "id": "10-1",
+              "r": 10,
+              "i": 1,
+              "type": "rest",
+              "x": 0.5,
+              "next": [
+                "11-0"
+              ],
+              "label": "伏妖坪·径",
+              "eventId": null
+            },
+            {
+              "id": "10-2",
+              "r": 10,
+              "i": 2,
+              "type": "shop",
+              "x": 0.75,
+              "next": [
+                "11-0"
+              ],
+              "label": "伏妖坪·崖",
+              "eventId": null
+            }
+          ],
+          [
+            {
+              "id": "11-0",
+              "r": 11,
+              "i": 0,
+              "type": "boss",
+              "x": 0.5,
+              "next": [],
+              "label": "青云峰",
+              "eventId": null
+            }
+          ]
+        ],
+        "atlas": true
+      },
+      "pos": null,
+      "path": [],
+      "jie": 0,
+      "nodes": 0
+    },
+    "stage": {
+      "kind": "combat",
+      "obj": "guard",
+      "node": "0-0",
+      "row": 0,
+      "ch": 0,
+      "t": 0,
+      "wave": 0,
+      "kills": 0,
+      "stones": 0,
+      "dur": 160,
+      "need": 0,
+      "core": {
+        "x": 0,
+        "y": 0,
+        "r": 26,
+        "hp": 1200,
+        "maxHp": 1200
+      },
+      "guardian": null,
+      "boss": null,
+      "done": false,
+      "failed": false,
+      "endT": 0,
+      "markAt": 55.75184772776543,
+      "marked": false,
+      "fast": true,
+      "clock": 0,
+      "nextWave": 12,
+      "rushReady": 4,
+      "assaultCount": 0,
+      "assaultKills": 0,
+      "travelClock": 0,
+      "aidAt": 8,
+      "regionAt": 6,
+      "regionFx": null
+    },
+    "bossIndex": -1,
+    "guardianIndex": -1,
+    "world": {
+      "summons": [],
+      "enemies": [],
+      "projs": [],
+      "orbs": [],
+      "fx": [],
+      "texts": [],
+      "swords": [],
+      "ebullets": [],
+      "zones": [],
+      "strikes": [],
+      "allies": [],
+      "marks": [],
+      "beams": [],
+      "waves": [],
+      "loot": [],
+      "bombs": [],
+      "time": 0,
+      "spawnAcc": 0,
+      "pendingLv": 0,
+      "shake": 0,
+      "curOpts": []
+    }
+  }
+}

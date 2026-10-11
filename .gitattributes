@@ -1,0 +1,5 @@
+# Preserve byte-identical HTML and source inputs across OS checkouts.
+*.html -text
+src/** -text
+*.png binary
+*.webp binary

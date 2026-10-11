@@ -1,0 +1,50 @@
+[
+  {
+    "file": "shanhai-original.json",
+    "sourceBuild": "shanhai-original",
+    "sourceSha256": "4d84e962df1e0e6bcb9d8ec56f885ec97cd2a09fc84bbe8f758c490289d5da7c",
+    "synthetic": true,
+    "expected": {
+      "hp": 47,
+      "stones": 123,
+      "cls": "jian",
+      "state": "pause"
+    }
+  },
+  {
+    "file": "claude-ver5.json",
+    "sourceBuild": "claude-ver5",
+    "sourceSha256": "a2dff9695794e05e686ad4db90a0719daf8c53715fe70bb3885dc2e3aeeed413",
+    "synthetic": true,
+    "expected": {
+      "hp": 47,
+      "stones": 123,
+      "cls": "kuilei",
+      "state": "pause"
+    }
+  },
+  {
+    "file": "integrated-ver5.json",
+    "sourceBuild": "integrated-ver5",
+    "sourceSha256": "67aed8154a2439124dc650a1ec0d2b57c6ead5b1c054f1b9651e29860f0c1cd3",
+    "synthetic": true,
+    "expected": {
+      "hp": 47,
+      "stones": 123,
+      "cls": "kuilei",
+      "state": "pause"
+    }
+  },
+  {
+    "file": "ver6.json",
+    "sourceBuild": "ver6",
+    "sourceSha256": "9eaf23530d99ace45213224bc1398ca529fd5232a6ab4bd86b583f6f34aa000b",
+    "synthetic": true,
+    "expected": {
+      "hp": 47,
+      "stones": 123,
+      "cls": "kuilei",
+      "state": "pause"
+    }
+  }
+]

@@ -1,0 +1,88 @@
+# ver7 / 1.3.0 构建源码与交接说明
+
+本目录能在不依赖作者电脑目录、不访问外部美术服务的情况下，重建仓库根目录 `index.html`。本次仅补源码与测试，保持已发布游戏逐字节不变。配色和新手指引的未发布改动不在本提交内。
+
+## 环境与构建
+
+需要 Node.js 22 或更高版本；交接时使用 Node.js 24.16.0 验证。构建只用 Node 内置模块，不需要安装 npm 包，也不需要网络。
+
+在仓库根目录执行：
+
+```sh
+node src/build.cjs
+node src/tests/verify-baseline.cjs
+```
+
+也可执行 `npm run build` 和 `npm run verify:baseline`。构建输出为仓库根目录 `index.html`，不是 `src/index.html`。脚本根据自身位置定位路径，能从其他工作目录调用。
+
+1.3.0 发布基线 SHA-256：
+
+```text
+D8DA7065686C60DB16B58B8421FF07D9BB73B06792847CE9E9B5A14299D00FCA
+```
+
+`verify:baseline` 是本次 1.3.0 可重现验收，不是以后所有版本都必须保持的哈希。后续有意修改功能时应记录新的版本基线，不能把真实修改伪装成构建偏差。
+
+## 文件职责
+
+| 路径 | 用途、修改位置 |
+| --- | --- |
+| `src/build.cjs` | 按确定顺序在 ver6 底座上应用 ver7 补丁，嵌入 NPC 图集，生成根目录 HTML；改整合位置或补丁规则时修改这里 |
+| `src/base/ver6.html` | ver6 的完整构建底座，已有角色、召唤、地形、妖物等图集全部内嵌；该文件就是输入源码之一，不需要作者的旧 outputs 目录 |
+| `src/trees.js` | 独立职业主动技能池、心法别名、前置技能与境界要求；在读档校验前注入 |
+| `src/combat.js` | ver7 守阵、武器限制、技能树界面、旧档迁移、输入、首领行为、奇遇替换、NPC 立绘接入 |
+| `src/style.css` | ver7 人物、技能树、战斗选项与手机样式；后续 UI 修复先修改此文件 |
+| `src/assets/npc-portraits.webp` | 构建实际读取的六人图集；缺失时构建失败，不能静默退化为空图 |
+| `src/assets/npc-portraits.png` | NPC 图集原始输出，供重新裁切或压缩；不是构建依赖，重建不会重新压缩原图 |
+| `src/tests/` | 六组游戏检查、构建哈希校验、测试运行器 |
+| `src/tests/fixtures/` | 四份由旧版本独立生成的人工测试存档及来源哈希，不包含玩家私人进度 |
+| `package.json` / `package-lock.json` | 仅测试需要 Playwright，精确锁定依赖 |
+| `.gitattributes` | 避免跨平台 checkout 改变 HTML / src 输入的换行字节 |
+
+图集生成记录见根目录 `npc-portrait-notes.md`。早期图集已包含在底座 HTML 中，构建不再读取外部原图；要编辑这些资源，必须同步修改实际构建输入，不能仅替换一个未被引用的图片。
+
+## 测试
+
+```sh
+npm ci
+npx playwright install chromium
+npm test
+```
+
+Linux 如果缺少浏览器运行库，可按 Playwright 的提示安装系统依赖，或执行 `npx playwright install --with-deps chromium`。
+
+也可使用已安装的 Chrome/Chromium，设置环境变量 `PLAYWRIGHT_EXECUTABLE_PATH` 为浏览器路径后运行测试；默认不依赖固定 Windows 路径。测试创建独立临时浏览器上下文，不读取个人浏览器账户或真实游戏存档。
+
+单组运行示例：
+
+```sh
+node src/tests/test.cjs
+node src/tests/extra.cjs
+node src/tests/legacy-test.cjs
+node src/tests/legacy-extra.cjs
+node src/tests/legacy-regression.cjs
+node src/tests/legacy-migrate.cjs
+```
+
+| 测试 | 覆盖 |
+| --- | --- |
+| `test.cjs` | ver7 职业限制、技能树、迁移、守阵、首领、设置、手机布局 |
+| `extra.cjs` | 替换奇遇、奖励去重、指针输入、远程攻阵、首领预警恢复 |
+| `legacy-test.cjs` | 同行篇主线、地域、批量分解、物资、NPC、存档 |
+| `legacy-extra.cjs` | 地方事件、跨轮回好感、触屏交互、大字号保存 |
+| `legacy-regression.cjs` | 十职业技能与进化、召唤、副业、旧职业兼容 |
+| `legacy-migrate.cjs` | 导入 fixtures 中四个旧版本存档，核对血量、灵石、职业与暂停状态 |
+
+截图和报告写入被忽略的 `test-results/<测试名>/`，不会写回 `src/` 或覆盖其他组报告。历史迁移脚本原先实时运行作者机器上的旧 HTML；交接版改为读取随仓库保存的旧版本样本，避免依赖未提交的旧游戏文件。
+
+交接时还修正了旧同行测试的布置：测试怪物放在玩家附近，并关闭随机词缀，避免出生位置变化导致“同伴减速”检查误报；未改游戏逻辑。干净克隆验证通过 609 项检查及 4 份旧档迁移。
+
+这些测试不等于真实 iPhone/微信全流程验收。当前 1.3.0 已知的奇遇按钮对比度问题尚未修复，此次提交刻意不改变游戏；既有布局检查也不能证明所有文字的对比度合格。
+
+## 存档与维护约束
+
+**不能更改存档键 `yjwx-save-stable` 和 `yjwx-save-previous`。** 保留旧格式导入和迁移；新增技能定义必须在含该技能的存档验证之前加载。当前没有账号云存档。
+
+以后按以下顺序交付：修改 `src/` → 构建 → 针对性测试及必要回归 → 将源码与生成的根目录 `index.html` 一起提交。不要只改成品 HTML，下次构建会覆盖它。
+
+这是旧单文件版本的完整可重建源码，不是把全部历史代码彻底模块化。进一步拆分底座时应单独提交，并先证明行为与旧档兼容。

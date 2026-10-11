@@ -1,0 +1,16 @@
+{
+  "name": "xiuxian1",
+  "version": "1.3.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node src/build.cjs",
+    "verify:baseline": "node src/tests/verify-baseline.cjs",
+    "test": "node src/tests/run.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
