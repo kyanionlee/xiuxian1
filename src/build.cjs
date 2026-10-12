@@ -39,4 +39,11 @@ for(const name of ['spriteAtlas','monsterArt','terrainArt','sceneryArt']){
 patch('function startStage(node){','function startStage(node){\nloadBattleArt();');
 if(/data:image\/[^;]+;base64,[A-Za-z0-9+/=]{100}/.test(h))throw Error('Embedded image in output');
 for(const match of h.matchAll(/assets\/[a-z0-9-]+\.webp/g))if(!fs.existsSync(path.join(root,match[0])))throw Error('Missing '+match[0]);
+const icons=fs.readFileSync(path.join(__dirname,'icons.js'),'utf8').replace('__ICON_MANIFEST__',JSON.stringify(JSON.parse(fs.readFileSync(path.join(__dirname,'icon-manifest.json'),'utf8'))));
+patch('showTitle();\nwindow.gameBootReady();',icons+'\nshowTitle();\nwindow.gameBootReady();');
+h=h.replaceAll('${s.icon}','${skillIcon(s)}').replaceAll('${itemGlyph(it)}','${itemArt(it)}').replaceAll('${mapIcon(n.type,x,y)}','${paintedMapIcon(n.type,x,y)}');
+patch('<h3>${it.icon} · ${it.name}</h3>','<h3>${iconMarkup("supply_"+k,it.icon)} ${it.name}</h3>');
+patch('<h3>${SK[k].name}</h3>','<h3>${skillIcon(SK[k])} ${SK[k].name}</h3>');
+patch('</style>',fs.readFileSync(path.join(__dirname,'icons.css'),'utf8')+'\n</style>');
+for(const url of Object.values(JSON.parse(fs.readFileSync(path.join(__dirname,'icon-manifest.json'),'utf8'))))if(!fs.existsSync(path.join(root,url)))throw Error('Missing icon '+url);
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));
