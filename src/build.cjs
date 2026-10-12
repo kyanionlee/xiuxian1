@@ -25,5 +25,9 @@ patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirnam
 patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'music.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
 patch("const SHANHAI_VERSION = '1.4.0';","const SHANHAI_VERSION = '1.5.0';");
 patch('问道篇 v1.4.0','问道篇 v1.5.0');
+// v1.5.1 修复（Claude）：召唤数量逐重增长、页面重绘保留滚动与折叠状态。
+patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'fixes.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+patch("const SHANHAI_VERSION = '1.5.0';","const SHANHAI_VERSION = '1.5.1';");
+patch('问道篇 v1.5.0','问道篇 v1.5.1');
 const art=path.join(__dirname,'assets/npc-portraits.webp');h=h.replace('__NPC_PORTRAITS__','data:image/webp;base64,'+fs.readFileSync(art).toString('base64'));
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));

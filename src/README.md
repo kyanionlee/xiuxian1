@@ -92,3 +92,8 @@ node src/tests/legacy-migrate.cjs
 
 verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版本先构建再运行 npm test。原 ver7 SHA-256 保留作历史核对。
 
+## v1.5 新增源码（Claude）
+
+- `music.js`：场景配乐模块，在 karma.js 之后注入。曲目在仓库根目录 `assets/music/`，离线包需要连同该文件夹一起打包。
+- `fixes.js`：v1.5.1 修复（召唤数量逐重增长、统御、页面重绘保留滚动与折叠状态）与轮回殿「道果」高阶项目（UPS 中 tier:2，开局效果在 applyDaoguo），最后注入。
+- 注入顺序（build.cjs）：karma.js → music.js → fixes.js → `showTitle();`。新模块应排在 fixes.js 之前或之后，取决于是否需要包装它修改过的函数。
