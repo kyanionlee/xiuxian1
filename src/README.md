@@ -109,3 +109,9 @@ verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版
 - `music.js`：场景配乐模块，在 karma.js 之后注入。曲目在仓库根目录 `assets/music/`，离线包需要连同该文件夹一起打包。
 - `fixes.js`：v1.5.1 修复（召唤数量逐重增长、统御、页面重绘保留滚动与折叠状态）与轮回殿「道果」高阶项目（UPS 中 tier:2，开局效果在 applyDaoguo），最后注入。
 - 注入顺序（build.cjs）：karma.js → music.js → fixes.js → `showTitle();`。新模块应排在 fixes.js 之前或之后，取决于是否需要包装它修改过的函数。
+
+- `qinggong.js`：v1.6.0 轻功（空格 / 双击冲刺、无敌帧、次数回复、HUD 与残影），在 fixes.js 之后注入。数值集中在 `qgStats()`。
+- `dasharts.js`：轻功联动（职业轻功 `DASH_ARTS`、云履词条 `DASH_FX`），在 qinggong.js 之后、notice.js 之前注入。效果在 `dashStart` / `dashEnd` 中实现。
+- `rush.js`：鸣钟赏（提前迎战奖励），包装 rush / assault / summonFinal，数值在文件开头注释。在 dasharts.js 之后、notice.js 之前注入。
+- `feedback.js`：v1.6.0 试玩反馈修正（引妖、从容难度、出发提醒、职业平衡、环身技能特效、自动流畅模式等），在 rush.js 之后、notice.js 之前注入。
+- `notice.js`：更新公告，最后注入。**每次发布新版本时，在 `NOTICES` 数组最前面加一条**（版本号、标题、要点），老玩家首次打开就会看到。是否已读存在 `settings.noticeSeen` / `settings.noticeNever`。

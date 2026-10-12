@@ -37,6 +37,10 @@ for(const name of ['spriteAtlas','monsterArt','terrainArt','sceneryArt']){
   h=h.replace(re,(_,url)=>`deferBattleArt(${name},'${url}');`);
 }
 patch('function startStage(node){','function startStage(node){\nloadBattleArt();');
+// v1.6.0（Claude）：轻功、轻功联动、鸣钟赏、试玩反馈修正、更新公告；依次注入，notice.js 必须最后。
+for(const f of ['qinggong.js','dasharts.js','rush.js','feedback.js','notice.js'])patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,f),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+patch("const SHANHAI_VERSION = '1.5.1';","const SHANHAI_VERSION = '1.6.0';");
+patch('问道篇 v1.5.1','问道篇 v1.6.0');
 if(/data:image\/[^;]+;base64,[A-Za-z0-9+/=]{100}/.test(h))throw Error('Embedded image in output');
 for(const match of h.matchAll(/assets\/[a-z0-9-]+\.webp/g))if(!fs.existsSync(path.join(root,match[0])))throw Error('Missing '+match[0]);
 const icons=fs.readFileSync(path.join(__dirname,'icons.js'),'utf8').replace('__ICON_MANIFEST__',JSON.stringify(JSON.parse(fs.readFileSync(path.join(__dirname,'icon-manifest.json'),'utf8'))));
