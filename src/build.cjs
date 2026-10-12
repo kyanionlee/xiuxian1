@@ -29,5 +29,14 @@ patch('问道篇 v1.4.0','问道篇 v1.5.0');
 patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,'fixes.js'),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
 patch("const SHANHAI_VERSION = '1.5.0';","const SHANHAI_VERSION = '1.5.1';");
 patch('问道篇 v1.5.0','问道篇 v1.5.1');
-const art=path.join(__dirname,'assets/npc-portraits.webp');h=h.replace('__NPC_PORTRAITS__','data:image/webp;base64,'+fs.readFileSync(art).toString('base64'));
+patch('const ARTX = {};',fs.readFileSync(path.join(__dirname,'assets.js'),'utf8')+'\nconst ARTX = {};');
+patch('  im.src = src; return im;','  deferBattleArt(im,src); return im;');
+for(const name of ['spriteAtlas','monsterArt','terrainArt','sceneryArt']){
+  const re=new RegExp(name+"\\.src='(assets/[^']+)';");
+  if(!re.test(h))throw Error('Missing external art '+name);
+  h=h.replace(re,(_,url)=>`deferBattleArt(${name},'${url}');`);
+}
+patch('function startStage(node){','function startStage(node){\nloadBattleArt();');
+if(/data:image\/[^;]+;base64,[A-Za-z0-9+/=]{100}/.test(h))throw Error('Embedded image in output');
+for(const match of h.matchAll(/assets\/[a-z0-9-]+\.webp/g))if(!fs.existsSync(path.join(root,match[0])))throw Error('Missing '+match[0]);
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));

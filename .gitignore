@@ -5,3 +5,4 @@ Thumbs.db
 *-存档-*.json
 
 /test-results/
+/dist/
