@@ -130,3 +130,9 @@ verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版
 - 定向测试 `node src/tests/v161.cjs`（构建只在内存中进行），已加入 `run.cjs`；`mobile-polish.cjs` 也一并加入。
 - 所有测试现在都读取 `PLAYWRIGHT_EXECUTABLE_PATH`。
 - 交接手册改名为 `docs/handbook.md`。
+
+## v1.6.2 新增源码（Claude）
+
+- `v162.js`：试玩反馈修正，在 `v161.js` 之后、`notice.js` 之前注入，数值在 `V162`。炼器师上限由 build.cjs 字符串替换为 +8。
+- 定向测试 `node src/tests/v162.cjs`，已加入 `run.cjs`。
+- `ult.js`：主动大招，在 `v162.js` 之后、`notice.js` 之前注入。
