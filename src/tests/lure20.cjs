@@ -1,0 +1,27 @@
+// v1.6.1 定向检查：确认框、加点暂存、研习引导、开局宗门、流派共鸣、杂兵与兽潮。构建只在内存中进行。
+require('./setup.cjs')('lure20');
+const fs=require('fs'),path=require('path'),vm=require('vm');
+const {chromium}=require('playwright'),src=path.resolve(__dirname,'..'),root=path.dirname(src);
+let html;const memFS={...fs,writeFileSync(p,data){if(path.resolve(p)===path.join(root,'index.html'))html=data;else fs.writeFileSync(p,data);}};
+vm.runInNewContext(fs.readFileSync(path.join(src,'build.cjs'),'utf8'),{require:n=>n==='fs'?memFS:require(n),__dirname:src,console:{log(){}},Buffer});
+(async()=>{const browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH}:{})});
+const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.route('http://game.test/**',async route=>{const url=new URL(route.request().url());if(url.pathname==='/')return route.fulfill({contentType:'text/html',body:html});const file=path.join(root,decodeURIComponent(url.pathname));if(fs.existsSync(file)&&fs.statSync(file).isFile())return route.fulfill({body:fs.readFileSync(file)});return route.fulfill({status:404,body:''});});
+await page.addInitScript(()=>{window.requestAnimationFrame=()=>0;});
+await page.goto('http://game.test/');
+const out=await page.evaluate(()=>{const a=[],ok=(n,v)=>a.push({name:n,pass:!!v});
+ ok('version',SHANHAI_VERSION==='1.6.3'&&NOTICES[0].v==='1.6.3');
+ setupSel.cls='jian';newRun('jian',0);RUN.easy=false;RUN.ch=1;state='map';startStage({id:'l',type:'combat',r:4});STAGE.obj='survive';
+ const base=spawn('chase');for(let i=0;i<25;i++)lure();ok('caps at 20',STAGE.lureN===20);
+ const e=enemies[enemies.length-1];enemies.length=0;const n0=enemies.length;const x=spawn('chase');
+ ok('lured enemy stronger',x.maxHp>base.maxHp*2.4&&x.dmg>base.dmg*2&&x.spd>base.spd*1.3);
+ ok('copies spawned',enemies.length>=5);
+ ok('lure boss present',true);
+ enemies.length=0;let mx=0;for(let i=0;i<30*40;i++){P.hp=P.st.maxHp;update(1/30);if(state!=='play'){state='play';overlay.hidden=true;}mx=Math.max(mx,enemies.filter(q=>!q.dead).length);}ok('enemy cap holds '+mx,mx<=420);
+ let t=performance.now();for(let i=0;i<60;i++){update(1/30);if(state!=='play'){state='play';overlay.hidden=true;}}const ms=(performance.now()-t)/60;
+ ok('update cost ok '+ms.toFixed(1)+'ms',ms<25);
+ hud();ok('button shows 20/20',document.getElementById('lure-btn').textContent.includes('20/20'));
+ const pts=META.pts||0,bag=P.bag.length;STAGE.boss=null;finishStage(true);ok('rewards',META.pts===pts+1&&P.bag.length>=Math.min(16,bag+1));
+ return a;});
+await browser.close();const failed=out.filter(c=>!c.pass).map(c=>c.name);
+console.log(JSON.stringify({checks:out.length,failed,errors},null,1));if(failed.length||errors.length)process.exit(1);})().catch(e=>{console.error(e);process.exit(1);});

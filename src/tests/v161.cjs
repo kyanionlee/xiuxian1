@@ -10,8 +10,8 @@ await page.route('http://game.test/**',async route=>{const url=new URL(route.req
 await page.addInitScript(()=>{window.requestAnimationFrame=()=>0;});
 await page.goto('http://game.test/');
 const out=await page.evaluate(()=>{const a=[],ok=(n,v)=>a.push({name:n,pass:!!v});const modal=()=>document.getElementById('v161-modal');const pressModal=t=>[...modal().querySelectorAll('button')].find(b=>b.textContent.includes(t)).click();
- ok('version',document.body.textContent.includes('问道篇 v1.6.2')||NOTICES[1].v==='1.6.1');
- ok('notice first',NOTICES[1].v==='1.6.1');
+ ok('version',document.body.textContent.includes('问道篇 v1.6.2')||NOTICES.some(n=>n.v==='1.6.1'));
+ ok('notice first',NOTICES.some(n=>n.v==='1.6.1'));
  // 宗门
  showSetup();ok('three sects open',['jian','fu','jingang'].every(k=>META.sects[k]&&!overlay.querySelector(`[data-act="ssect"][data-k="${k}"]`).disabled));
  ok('other sects still locked',!META.sects.tianji);

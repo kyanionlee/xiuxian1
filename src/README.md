@@ -136,3 +136,8 @@ verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版
 - `v162.js`：试玩反馈修正，在 `v161.js` 之后、`notice.js` 之前注入，数值在 `V162`。炼器师上限由 build.cjs 字符串替换为 +8。
 - 定向测试 `node src/tests/v162.cjs`，已加入 `run.cjs`。
 - `ult.js`：主动大招，在 `v162.js` 之后、`notice.js` 之前注入。
+
+## v1.6.3
+
+- `ult-art.js`（Codex）：大招与首领特效美术，图集与图标放在根目录 `assets/ult/`。
+- `lure20.js`（Claude）：二十层引妖，覆盖 v162 的 3 层上限。测试 `src/tests/lure20.cjs`、`src/tests/ult-art-safety.cjs` 已加入 `run.cjs`；`ult-art.cjs` 是帧时间测试，依赖 GPU，不放进 run.cjs。

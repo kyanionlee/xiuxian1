@@ -7,7 +7,7 @@ function loadUltArt(){
   if(ULT_ART.loading)return;ULT_ART.loading=true;
   const im=new Image();im.decoding='async';
   im.onload=()=>{for(let i=0;i<10;i++){const tile=document.createElement('canvas');tile.width=tile.height=64;const c=tile.getContext('2d');c.beginPath();c.arc(32,32,29,0,Math.PI*2);c.clip();c.drawImage(im,(i%5)*128+12,Math.floor(i/5)*128+12,104,104,0,0,64,64);ULT_ART.sprites[i]=tile;}};
-  im.src='src/assets/ult/ultimate-atlas.webp';
+  im.src='assets/ult/ultimate-atlas.webp';
 }
 function trimArt(){
   const pools=[fx,BFX,TVFX],all=[];let particles=0;

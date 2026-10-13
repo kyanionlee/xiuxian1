@@ -10,7 +10,7 @@
 - 附加演出最多 1 秒，超过 40 个纯装饰对象丢弃最旧对象；最多 120 个粒子，已有 spark 超限丢弃最旧。低画质附加粒子为 0。
 - 新绘制不使用 shadowBlur/filter 或每帧渐变；使用两层半透明圆。警告范围、火海伤害等持续判定保持原样，不受 1 秒装饰期限影响。
 - 10 个 160×160 WebP 图标（11,154–13,332 字节）及 640×256 WebP 图集（72,400 字节）。图集进入战斗时才加载，一次裁取并缓存 64px 小图；每帧仅画缓存，不缩放大图。加载失败保留文字及路径绘制。
-- 配套修改 build.cjs、icon-manifest.json 和离线打包清单；assets 均位于 src/assets/ult，离线包会包含它们。
+- 配套修改 build.cjs、icon-manifest.json 和离线打包清单；assets 均位于根目录 assets/ult（Claude 合并时从 src/assets/ult 移出），离线包会包含它们。
 
 ## 指定回归与验收
 
@@ -41,6 +41,6 @@ Windows / Playwright Chromium / NVIDIA GeForce RTX 3050，启用 D3D11 GPU 合�
 
 ## 交付与上传
 
-将补丁内的 src/ 合并到同一 v1.6.2 仓库，再由 Claude 或作者执行 node src/build.cjs，并按自己的发布流程更新版本/公告、测试与上传。此次补丁不含根目录成品，不能只上传 src 后期待网页立即变化。离线打包执行 node src/package-offline.cjs，会包含新的 src/assets/ult/。
+将补丁内的 src/ 合并到同一 v1.6.2 仓库，再由 Claude 或作者执行 node src/build.cjs，并按自己的发布流程更新版本/公告、测试与上传。此次补丁不含根目录成品，不能只上传 src 后期待网页立即变化。离线打包执行 node src/package-offline.cjs，会包含新的 assets/ult/。
 
 图标生成使用内置 image_gen；逐图提示词见 assets/ult/prompts.md。

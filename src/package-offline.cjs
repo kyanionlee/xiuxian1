@@ -1,7 +1,7 @@
 // Dependency-free ZIP writer (stored entries), usable on Windows, macOS and Linux.
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'dist');fs.mkdirSync(out,{recursive:true});
-const files=['index.html'];function walk(dir){for(const f of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){const n=dir+'/'+f.name;if(f.isDirectory())walk(n);else files.push(n);}}walk('assets');walk('src/assets/ult');
+const files=['index.html'];function walk(dir){for(const f of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){const n=dir+'/'+f.name;if(f.isDirectory())walk(n);else files.push(n);}}walk('assets');
 const table=Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
 function crc(b){let c=0xffffffff;for(const n of b)c=table[(c^n)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 let offset=0;const entries=[],central=[];
