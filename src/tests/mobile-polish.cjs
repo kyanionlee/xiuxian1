@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('ass
 const {chromium}=require('playwright'),src=path.resolve(__dirname,'..'),root=path.dirname(src);
 let html;const guardedFS={...fs,readFileSync(p,...args){assert.notStrictEqual(path.resolve(p),path.join(root,'index.html'));return fs.readFileSync(p,...args);},writeFileSync(p,data){assert.strictEqual(path.resolve(p),path.join(root,'index.html'));html=data;}};
 vm.runInNewContext(fs.readFileSync(path.join(src,'build.cjs'),'utf8'),{require:n=>n==='fs'?guardedFS:require(n),__dirname:src,console,Buffer});
-(async()=>{const browser=await chromium.launch();let checks=0;
+(async()=>{const browser=await chromium.launch({...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH}:{})});let checks=0;
 try{for(const size of [{width:360,height:640},{width:390,height:844},{width:844,height:390},{width:1280,height:800}]){
  const page=await browser.newPage({viewport:size,isMobile:size.width<900,hasTouch:size.width<900});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route('http://game.test/**',async route=>{const url=new URL(route.request().url());if(url.pathname==='/')return route.fulfill({contentType:'text/html',body:html});const file=path.join(root,decodeURIComponent(url.pathname));if(url.pathname.startsWith('/assets/')&&fs.existsSync(file))return route.fulfill({body:fs.readFileSync(file)});return route.fulfill({status:404,body:''});});

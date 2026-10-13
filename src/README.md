@@ -123,3 +123,10 @@ verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版
 - 在 `feedback.js` 之后、`notice.js` 之前注入；图标样式后加载补丁样式。
 - 本次按作者要求只提交 src，不生成根目录成品、不改版本号。由主维护者统一更新公告、版本及成品后发布。
 - 定向验证：`node src/tests/mobile-polish.cjs`。构建结果仅存内存，不读写根目录 index.html；检查四个视口、反复暂停/切页、心法、触控功能及特效绘制。不代替完整测试或真机验收。
+
+## v1.6.1 新增源码（Claude）
+
+- `v161.js`：确认框 `askConfirm`、属性加点暂存、研习引导、开局宗门、杂兵与兽潮外圈、流派共鸣。在 `mobile-polish.js` 之后、`notice.js` 之前注入；数值集中在文件开头的 `V161`。
+- 定向测试 `node src/tests/v161.cjs`（构建只在内存中进行），已加入 `run.cjs`；`mobile-polish.cjs` 也一并加入。
+- 所有测试现在都读取 `PLAYWRIGHT_EXECUTABLE_PATH`。
+- 交接手册改名为 `docs/handbook.md`。

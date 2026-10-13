@@ -5,7 +5,7 @@ const {chromium}=require('playwright'),fs=require('node:fs'),http=require('node:
  const html=fs.readFileSync('index.html','utf8');ok('no embedded raster images',!/data:image\/[^;]+;base64,[A-Za-z0-9+/=]{100}/.test(html));ok('HTML under 600 KB',Buffer.byteLength(html)<600000);
  const server=http.createServer((req,res)=>{const f=path.join(root,decodeURIComponent(req.url.split('?')[0]));if(!fs.existsSync(f)||!fs.statSync(f).isFile()){res.writeHead(404);return res.end();}res.setHeader('Content-Type',f.endsWith('.webp')?'image/webp':'text/html; charset=utf-8');res.end(fs.readFileSync(f));});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url=`http://127.0.0.1:${server.address().port}/index.html`;
- const browser=await chromium.launch({headless:true});try{
+ const browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH}:{})});try{
  const page=await browser.newPage({viewport:{width:360,height:640}}),requests=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));await page.goto(url);await page.waitForLoadState('networkidle');
  ok('homepage defers combat and NPC',!requests.some(x=>/monsters|characters|summons|professions|npc-/.test(x)));
  await page.evaluate(()=>{setupSel.cls='jian';newRun('jian',0);showMap();showPerson('yun');});await page.waitForFunction(()=>document.querySelector('.npc-portrait')?.naturalWidth>0);
