@@ -38,7 +38,7 @@ for(const name of ['spriteAtlas','monsterArt','terrainArt','sceneryArt']){
 }
 patch('function startStage(node){','function startStage(node){\nloadBattleArt();');
 // v1.6.0（Claude）：轻功、轻功联动、鸣钟赏、试玩反馈修正、更新公告；依次注入，notice.js 必须最后。
-for(const f of ['qinggong.js','dasharts.js','rush.js','feedback.js','notice.js'])patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,f),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+for(const f of ['qinggong.js','dasharts.js','rush.js','feedback.js','mobile-polish.js','notice.js'])patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,f),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
 patch("const SHANHAI_VERSION = '1.5.1';","const SHANHAI_VERSION = '1.6.0';");
 patch('问道篇 v1.5.1','问道篇 v1.6.0');
 if(/data:image\/[^;]+;base64,[A-Za-z0-9+/=]{100}/.test(h))throw Error('Embedded image in output');
@@ -49,5 +49,6 @@ h=h.replaceAll('${s.icon}','${skillIcon(s)}').replaceAll('${itemGlyph(it)}','${i
 patch('<h3>${it.icon} · ${it.name}</h3>','<h3>${iconMarkup("supply_"+k,it.icon)} ${it.name}</h3>');
 patch('<h3>${SK[k].name}</h3>','<h3>${skillIcon(SK[k])} ${SK[k].name}</h3>');
 patch('</style>',fs.readFileSync(path.join(__dirname,'icons.css'),'utf8')+'\n</style>');
+patch('</style>',fs.readFileSync(path.join(__dirname,'mobile-polish.css'),'utf8')+'\n</style>');
 for(const url of Object.values(JSON.parse(fs.readFileSync(path.join(__dirname,'icon-manifest.json'),'utf8'))))if(!fs.existsSync(path.join(root,url)))throw Error('Missing icon '+url);
 fs.writeFileSync(path.join(root,'index.html'),h);console.log('Built',Buffer.byteLength(h));

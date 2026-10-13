@@ -115,3 +115,11 @@ verify:baseline 仅用于历史 ver7 源码提交，不适用于 v1.4.0；新版
 - `rush.js`：鸣钟赏（提前迎战奖励），包装 rush / assault / summonFinal，数值在文件开头注释。在 dasharts.js 之后、notice.js 之前注入。
 - `feedback.js`：v1.6.0 试玩反馈修正（引妖、从容难度、出发提醒、职业平衡、环身技能特效、自动流畅模式等），在 rush.js 之后、notice.js 之前注入。
 - `notice.js`：更新公告，最后注入。**每次发布新版本时，在 `NOTICES` 数组最前面加一条**（版本号、标题、要点），老玩家首次打开就会看到。是否已读存在 `settings.noticeSeen` / `settings.noticeNever`。
+
+## 手机界面与战斗表现补丁（待主维护者构建发布）
+
+- `mobile-polish.js`：暂停入口防重复、底部继续按钮、默认展开心法、触屏鸣钟/引妖文案；落剑、雕玉印、雷阵、禁锢及环身特效。仅绘制变化，保留伤害、半径、命中时机和存档键。
+- `mobile-polish.css`：紧凑手机卡片和图标、44px 触控目标、暂停底栏。
+- 在 `feedback.js` 之后、`notice.js` 之前注入；图标样式后加载补丁样式。
+- 本次按作者要求只提交 src，不生成根目录成品、不改版本号。由主维护者统一更新公告、版本及成品后发布。
+- 定向验证：`node src/tests/mobile-polish.cjs`。构建结果仅存内存，不读写根目录 index.html；检查四个视口、反复暂停/切页、心法、触控功能及特效绘制。不代替完整测试或真机验收。
