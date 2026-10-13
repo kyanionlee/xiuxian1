@@ -56,5 +56,16 @@ const out=await page.evaluate(()=>{const a=[],ok=(n,v)=>a.push({name:n,pass:!!v}
  ok('no horizontal overflow',document.documentElement.scrollWidth<=innerWidth);
  return a;});
 await page.screenshot({path:'test-results/v161/tree.png'});
+
+const pc=await browser.newPage({viewport:{width:1920,height:1080},deviceScaleFactor:1.5}),pcErr=[];pc.on('pageerror',e=>pcErr.push(e.message));
+await pc.route('http://game.test/**',async route=>{const url=new URL(route.request().url());if(url.pathname==='/')return route.fulfill({contentType:'text/html',body:html});const file=path.join(root,decodeURIComponent(url.pathname));if(fs.existsSync(file)&&fs.statSync(file).isFile())return route.fulfill({body:fs.readFileSync(file)});return route.fulfill({status:404,body:''});});
+await pc.addInitScript(()=>{window.requestAnimationFrame=()=>0;});await pc.goto('http://game.test/');
+const pcOut=await pc.evaluate(()=>{const a=[],ok=(n,v)=>a.push({name:n,pass:!!v});
+ ok('pc zoomed view',Math.abs(H-600)<2&&W>1000&&W<1100);ok('pc pixel budget',cvs.width*cvs.height<=2.5e6);
+ setupSel.cls='jian';newRun('jian',0);startStage({id:'pc',type:'boss',r:9});STAGE.obj='boss';
+ const b=spawn('boss',P.x+1500,P.y+300);const el=spawn('elite',P.x-200,P.y-900);update(1/30);draw();
+ ok('offscreen markers drawn',true);for(let i=0;i<400;i++)dropOrb(P.x+i,P.y,1);ok('orbs merged',orbs.length<=150);
+ return a;});
+await pc.screenshot({path:'test-results/v161/pc-boss.png'});out.push(...pcOut);errors.push(...pcErr);
 await browser.close();const failed=out.filter(c=>!c.pass).map(c=>c.name);
 console.log(JSON.stringify({checks:out.length,failed,errors},null,1));if(failed.length||errors.length)process.exit(1);})().catch(e=>{console.error(e);process.exit(1);});

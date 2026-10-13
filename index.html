@@ -4204,7 +4204,7 @@ cvs.addEventListener('pointerdown',e=>{if(state!=='play')return;if(joy&&joy.id!=
 const clearInputV7=()=>{joy=null;for(const k in keys)delete keys[k];};addEventListener('blur',clearInputV7);document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInputV7();if(state==='play')pause();}});
 const baseInputV7=inputVec;inputVec=function(){if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d<=5)return{x:0,y:0};const speed=Math.min(1,(d-5)/32);return{x:dx/d*speed,y:dy/d*speed};}return baseInputV7();};
 const pickUpdateV7=updOrbs;updOrbs=function(dt){for(const o of orbs)if(Math.hypot(o.x-P.x,o.y-P.y)<Math.max(110,P.st.pick*1.35))o.mag=true;pickUpdateV7(dt);};
-const orbArtV7=drawOrb;drawOrb=function(o){if(o.heal||o.chest||o.stone)return orbArtV7(o);const c=ctx,r=(o.v>=10?10:7.5)*(settings.clearBattle?1.15:1);c.save();c.translate(o.x,o.y);c.fillStyle='#06332f';c.strokeStyle='#ccffed';c.lineWidth=1.5;c.shadowColor='#72ffd4';c.shadowBlur=settings.clearBattle?0:9;c.beginPath();c.moveTo(0,-r*1.4);c.lineTo(r,0);c.lineTo(0,r);c.lineTo(-r,0);c.closePath();c.fillStyle=o.v>=10?'#f0d589':'#70e1b5';c.fill();c.stroke();c.shadowBlur=0;c.strokeStyle='#ffffff99';c.beginPath();c.moveTo(0,-r);c.lineTo(-r*.4,0);c.lineTo(0,r*.65);c.stroke();c.restore();};
+const orbArtV7=drawOrb;drawOrb=function(o){if(o.heal||o.chest||o.stone)return orbArtV7(o);const c=ctx,r=(o.v>=10?10:7.5)*(settings.clearBattle?1.15:1);c.save();c.translate(o.x,o.y);c.fillStyle='#06332f';c.strokeStyle='#ccffed';c.lineWidth=1.5;c.shadowColor='#72ffd4';c.shadowBlur=0;c.beginPath();c.moveTo(0,-r*1.4);c.lineTo(r,0);c.lineTo(0,r);c.lineTo(-r,0);c.closePath();c.fillStyle=o.v>=10?'#f0d589':'#70e1b5';c.fill();c.stroke();c.shadowBlur=0;c.strokeStyle='#ffffff99';c.beginPath();c.moveTo(0,-r);c.lineTo(-r*.4,0);c.lineTo(0,r*.65);c.stroke();c.restore();};
 let critShakeAt=-10;
 const impactV7=hit;hit=function(...a){const len=texts.length,hp=a[0]?.hp;impactV7(...a);if(a[0]?.hp<hp&&texts.length>len&&texts[texts.length-1].crit&&settings.shakeEnabled&&time-critShakeAt>.12){shake=Math.max(shake,2.7);critShakeAt=time;}};
 function drawDamageV7(t){if(settings.clearBattle&&!t.crit&&!t.heal&&texts.indexOf(t)%3!==0)return;const c=ctx;c.save();const alpha=Math.max(0,1-t.t/.7),scale=t.crit?1+.22*Math.max(0,1-t.t/.16):1;c.translate(t.x,t.y-t.t*(t.crit?48:30));c.scale(scale,scale);c.globalAlpha=alpha;c.textAlign='center';c.lineJoin='round';c.font=`900 ${t.crit?24:t.heal?17:15}px 'Microsoft YaHei',sans-serif`;c.strokeStyle='#082026';c.lineWidth=t.crit?4:3;const text=(t.heal&&typeof t.v==='number'?'+':'')+(typeof t.v==='number'?Math.round(t.v):t.v);c.strokeText(text,0,0);if(t.crit){const g=c.createLinearGradient(0,-23,0,3);g.addColorStop(0,'#fff5cb');g.addColorStop(.5,'#ffe388');g.addColorStop(1,'#ff8d43');c.fillStyle=g;}else c.fillStyle=t.heal?'#9affcf':'#f0efe5';c.fillText(text,0,0);if(t.crit){c.font='bold 10px sans-serif';c.fillStyle='#ffe8ab';c.fillText('暴击',0,-25);}c.restore();}
@@ -5775,6 +5775,64 @@ renderLevelUp = function(...a){
   return r;
 };
 
+/* ================================================================
+   PC 视角与性能、首领 / 精英方位指示
+   - 电脑（精细指针）上把视野缩放到短边约 600 逻辑像素，接近手机视角的 1.5 倍；
+     画布像素总量限制在约 240 万（流畅模式 100 万），大屏高分辨率不再拖慢。
+   - 修灵气结晶：去掉每颗结晶的阴影模糊（构建时替换），场上结晶超过 140 颗自动合并。
+   - 首领、镇守、精英在屏幕外时，屏幕边缘显示箭头、名字和距离。
+   ================================================================ */
+const VIEW = { short:600, budget:2.4e6, budgetSlow:1.0e6, zoom:1 };
+const _resize161 = resize;
+resize = function(...a){
+  _resize161(...a);
+  try {
+    const iw = innerWidth, ih = innerHeight, fine = !matchMedia('(pointer: coarse)').matches;
+    const slow = typeof PERF !== 'undefined' && PERF.done;
+    const z = fine ? Math.max(1, Math.min(iw, ih) / VIEW.short) : 1;
+    const sp = slow ? 1 : Math.min(Math.min(2, devicePixelRatio || 1), Math.sqrt((slow ? VIEW.budgetSlow : VIEW.budget) / (iw * ih)));
+    VIEW.zoom = z; W = iw / z; H = ih / z; DPR = sp * z;
+    cvs.width = Math.round(iw * sp); cvs.height = Math.round(ih * sp);
+    cvs.style.width = iw + 'px'; cvs.style.height = ih + 'px';
+  } catch (e) {}
+};
+addEventListener('resize', () => resize());
+resize();
+const _dropOrb161 = dropOrb;
+dropOrb = function(x, y, v){
+  if (orbs.length > 140){ for (let i = 0; i < 6; i++){ const o = orbs[Math.floor(Math.random() * orbs.length)]; if (o && o.v){ o.v += v; return; } } }
+  return _dropOrb161(x, y, v);
+};
+const _draw161 = draw;
+draw = function(...a){
+  const r = _draw161(...a);
+  try {
+    if (!P || !STAGE || MENU_STATES.includes(state)) return r;
+    const list = enemies.filter(e => !e.dead && (e.boss || e.elite));
+    if (!list.length) return r;
+    list.sort((p, q) => (q.boss || q.guardian ? 1 : 0) - (p.boss || p.guardian ? 1 : 0) || d2(p, P) - d2(q, P));
+    const c = ctx, m = 30, camX = P.x - W / 2, camY = P.y - H / 2;
+    c.save(); c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    for (const e of list.slice(0, 4)){
+      const sx = e.x - camX, sy = e.y - camY;
+      if (sx > -e.r && sx < W + e.r && sy > -e.r && sy < H + e.r) continue;
+      const dx = sx - W / 2, dy = sy - H / 2, k = Math.min((W / 2 - m) / Math.abs(dx || 1e-6), (H / 2 - m - 40) / Math.abs(dy || 1e-6));
+      const x = W / 2 + dx * k, y = H / 2 + dy * k, ang = Math.atan2(dy, dx), big = e.boss || e.guardian;
+      const col = e.boss ? '#ff6b5b' : big ? '#ffb347' : '#e6c879', pulse = 0.75 + 0.25 * Math.sin(performance.now() / 160);
+      c.translate(x, y); c.rotate(ang); c.globalAlpha = pulse; c.fillStyle = col; c.strokeStyle = '#000a'; c.lineWidth = 2;
+      const s = big ? 16 : 11; c.beginPath(); c.moveTo(s, 0); c.lineTo(-s * 0.7, s * 0.75); c.lineTo(-s * 0.35, 0); c.lineTo(-s * 0.7, -s * 0.75); c.closePath(); c.stroke(); c.fill();
+      c.setTransform(DPR, 0, 0, DPR, 0, 0); c.globalAlpha = 1;
+      const lx = x - Math.cos(ang) * (s + 16), ly = y - Math.sin(ang) * (s + 16);
+      c.font = `${big ? 700 : 400} ${big ? 13 : 11}px "Noto Serif SC",serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
+      const label = `${big ? (e.name || '首领') : '精英'} ${Math.round(Math.sqrt(d2(e, P)) / 10)} 丈`;
+      const tw = c.measureText(label).width / 2 + s + 8, cx = Math.max(tw, Math.min(W - tw, lx)), cy = Math.max(s + 50, Math.min(H - s - 50, ly));
+      c.lineWidth = 3; c.strokeStyle = '#000c'; c.strokeText(label, cx, cy); c.fillStyle = col; c.fillText(label, cx, cy);
+    }
+    c.restore(); c.textBaseline = 'alphabetic';
+  } catch (e) {}
+  return r;
+};
+
 
 /* ================================================================
    更新公告（Claude）：老玩家打开游戏时显示本次更新内容。
@@ -5789,7 +5847,10 @@ const NOTICES = [
     '战斗更爽：新增成群出现的「杂兵」（血少、好杀），兽潮外圈多一圈妖物，从容与标准难度的中后期最明显；卡顿设备会自动减量。',
     '防误点：属性加点改为先选好再按「确认加点」；离开坊市、放弃此世都会先弹出确认。',
     '有未用的研习点时出发：第一次会先打开技能树，之后会提醒（可选本世不再提醒）。',
-    '开局宗门：除青云剑宗外，天符宗、金刚寺也默认开放，不用非得选剑。' ] },
+    '开局宗门：除青云剑宗外，天符宗、金刚寺也默认开放，不用非得选剑。',
+    '电脑版：修复战斗越打越卡的问题（灵气结晶的发光效果在大屏上非常耗性能，已去掉并自动合并），画面像素量限制在合理范围；视角拉近到接近手机的 1.5 倍。',
+    '妖王、镇守和精英在屏幕外时，屏幕边缘会显示箭头、名字和距离，方便找到它们过关。',
+    '手机界面：卡片和按钮更紧凑好点，暂停菜单「继续」放到底部，鸣钟 / 引妖有触屏按钮，修复暂停菜单重复弹出，落剑、雷阵等技能特效重绘。' ] },
   { v:'1.6.0', title:'轻功', items:[
     '新增轻功：电脑按空格，手机快速双击屏幕，朝移动方向短距离冲刺，起步瞬间无敌，可以闪避妖王的范围攻击和落雷。',
     '轻功次数随境界增加（金丹、化神各 +1，最多 3 次），用完后自动回复；气血条旁显示剩余次数。',

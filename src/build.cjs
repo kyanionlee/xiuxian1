@@ -16,6 +16,8 @@ patch('for (const b of ebullets){ c.globalAlpha = 0.3; c.fillStyle = C.violet;',
 patch('if(s.clock>=s.hazardAt){','if(s.clock>=s.hazardAt&&!enemies.some(e=>e.bossV7&&!e.dead)){');
 patch("for (const t of texts){ c.globalAlpha = 1 - t.t / 0.7; c.fillStyle = t.heal ? C.jade : t.crit ? C.gold : C.ink; if (t.crit) c.font = '700 16px \"Noto Serif SC\", serif'; c.fillText(t.v, t.x, t.y - t.t * 30); if (t.crit) c.font = '700 13px \"Noto Serif SC\", serif'; }","for(const t of texts)drawDamageV7(t);");
 patch('showTitle();\nrequestAnimationFrame(frame);',fs.readFileSync(path.join(__dirname,'combat.js'),'utf8')+'\nshowTitle();\nrequestAnimationFrame(frame);');
+// v1.6.1：灵气结晶阴影模糊在大屏上极耗性能，统一关闭。
+patch('c.shadowBlur=settings.clearBattle?0:9','c.shadowBlur=0');
 patch('</style>',['style.css','readability.css'].map(f=>fs.readFileSync(path.join(__dirname,f),'utf8')).join('\n')+'\n</style>');
 patch('showTitle();\nrequestAnimationFrame(frame);',['guide.js','ux.js'].map(f=>fs.readFileSync(path.join(__dirname,f),'utf8')).join('\n')+'\nshowTitle();\nwindow.gameBootReady();\nrequestAnimationFrame(frame);');
 patch("const SHANHAI_VERSION = '1.3.0';","const SHANHAI_VERSION = '1.4.0';");

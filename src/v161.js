@@ -368,3 +368,61 @@ renderLevelUp = function(...a){
   try { overlay.querySelectorAll('.card[data-act="lv"]').forEach(c => { const k = curOpts[+c.dataset.k]; if (typeof k === 'string' && SK[k] && SK[k].cat !== 'p'){ const em = c.querySelector('em'); if (em) em.insertAdjacentHTML('beforeend', flowTag(k)); } }); } catch (e) {}
   return r;
 };
+
+/* ================================================================
+   PC 视角与性能、首领 / 精英方位指示
+   - 电脑（精细指针）上把视野缩放到短边约 600 逻辑像素，接近手机视角的 1.5 倍；
+     画布像素总量限制在约 240 万（流畅模式 100 万），大屏高分辨率不再拖慢。
+   - 修灵气结晶：去掉每颗结晶的阴影模糊（构建时替换），场上结晶超过 140 颗自动合并。
+   - 首领、镇守、精英在屏幕外时，屏幕边缘显示箭头、名字和距离。
+   ================================================================ */
+const VIEW = { short:600, budget:2.4e6, budgetSlow:1.0e6, zoom:1 };
+const _resize161 = resize;
+resize = function(...a){
+  _resize161(...a);
+  try {
+    const iw = innerWidth, ih = innerHeight, fine = !matchMedia('(pointer: coarse)').matches;
+    const slow = typeof PERF !== 'undefined' && PERF.done;
+    const z = fine ? Math.max(1, Math.min(iw, ih) / VIEW.short) : 1;
+    const sp = slow ? 1 : Math.min(Math.min(2, devicePixelRatio || 1), Math.sqrt((slow ? VIEW.budgetSlow : VIEW.budget) / (iw * ih)));
+    VIEW.zoom = z; W = iw / z; H = ih / z; DPR = sp * z;
+    cvs.width = Math.round(iw * sp); cvs.height = Math.round(ih * sp);
+    cvs.style.width = iw + 'px'; cvs.style.height = ih + 'px';
+  } catch (e) {}
+};
+addEventListener('resize', () => resize());
+resize();
+const _dropOrb161 = dropOrb;
+dropOrb = function(x, y, v){
+  if (orbs.length > 140){ for (let i = 0; i < 6; i++){ const o = orbs[Math.floor(Math.random() * orbs.length)]; if (o && o.v){ o.v += v; return; } } }
+  return _dropOrb161(x, y, v);
+};
+const _draw161 = draw;
+draw = function(...a){
+  const r = _draw161(...a);
+  try {
+    if (!P || !STAGE || MENU_STATES.includes(state)) return r;
+    const list = enemies.filter(e => !e.dead && (e.boss || e.elite));
+    if (!list.length) return r;
+    list.sort((p, q) => (q.boss || q.guardian ? 1 : 0) - (p.boss || p.guardian ? 1 : 0) || d2(p, P) - d2(q, P));
+    const c = ctx, m = 30, camX = P.x - W / 2, camY = P.y - H / 2;
+    c.save(); c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    for (const e of list.slice(0, 4)){
+      const sx = e.x - camX, sy = e.y - camY;
+      if (sx > -e.r && sx < W + e.r && sy > -e.r && sy < H + e.r) continue;
+      const dx = sx - W / 2, dy = sy - H / 2, k = Math.min((W / 2 - m) / Math.abs(dx || 1e-6), (H / 2 - m - 40) / Math.abs(dy || 1e-6));
+      const x = W / 2 + dx * k, y = H / 2 + dy * k, ang = Math.atan2(dy, dx), big = e.boss || e.guardian;
+      const col = e.boss ? '#ff6b5b' : big ? '#ffb347' : '#e6c879', pulse = 0.75 + 0.25 * Math.sin(performance.now() / 160);
+      c.translate(x, y); c.rotate(ang); c.globalAlpha = pulse; c.fillStyle = col; c.strokeStyle = '#000a'; c.lineWidth = 2;
+      const s = big ? 16 : 11; c.beginPath(); c.moveTo(s, 0); c.lineTo(-s * 0.7, s * 0.75); c.lineTo(-s * 0.35, 0); c.lineTo(-s * 0.7, -s * 0.75); c.closePath(); c.stroke(); c.fill();
+      c.setTransform(DPR, 0, 0, DPR, 0, 0); c.globalAlpha = 1;
+      const lx = x - Math.cos(ang) * (s + 16), ly = y - Math.sin(ang) * (s + 16);
+      c.font = `${big ? 700 : 400} ${big ? 13 : 11}px "Noto Serif SC",serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
+      const label = `${big ? (e.name || '首领') : '精英'} ${Math.round(Math.sqrt(d2(e, P)) / 10)} 丈`;
+      const tw = c.measureText(label).width / 2 + s + 8, cx = Math.max(tw, Math.min(W - tw, lx)), cy = Math.max(s + 50, Math.min(H - s - 50, ly));
+      c.lineWidth = 3; c.strokeStyle = '#000c'; c.strokeText(label, cx, cy); c.fillStyle = col; c.fillText(label, cx, cy);
+    }
+    c.restore(); c.textBaseline = 'alphabetic';
+  } catch (e) {}
+  return r;
+};
