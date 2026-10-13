@@ -40,7 +40,7 @@ for(const name of ['spriteAtlas','monsterArt','terrainArt','sceneryArt']){
 }
 patch('function startStage(node){','function startStage(node){\nloadBattleArt();');
 // v1.6.0（Claude）：轻功、轻功联动、鸣钟赏、试玩反馈修正、更新公告；依次注入，notice.js 必须最后。
-for(const f of ['qinggong.js','dasharts.js','rush.js','feedback.js','mobile-polish.js','v161.js','v162.js','ult.js','notice.js'])patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,f),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
+for(const f of ['qinggong.js','dasharts.js','rush.js','feedback.js','mobile-polish.js','v161.js','v162.js','ult.js','ult-art.js','notice.js'])patch('showTitle();\nwindow.gameBootReady();',fs.readFileSync(path.join(__dirname,f),'utf8')+'\nshowTitle();\nwindow.gameBootReady();');
 patch("const SHANHAI_VERSION = '1.5.1';","const SHANHAI_VERSION = '1.6.0';");
 patch('问道篇 v1.5.1','问道篇 v1.6.0');
 // v1.6.1（Claude）：v161.js 在 mobile-polish.js 之后、notice.js 之前注入（见上面的列表）。

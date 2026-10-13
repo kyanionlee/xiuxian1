@@ -224,22 +224,22 @@ function procSpec(){
   const t = FLOW.spec, big = FLOW.specTier > 1, base = procBase(), area = P.st.area;
   if (t === 'feng'){
     const n = big ? 12 : 8, off = Math.random() * Math.PI;
-    for (let i = 0; i < n; i++){ const a = off + i / n * Math.PI * 2; line(P.x, P.y, a, 330 * area, 16, base * 1.2, 90, 'w'); fx.push({ k:'thrust', x:P.x, y:P.y, a, len:330 * area, w:16, t:0, dur:0.3 }); }
-    flowFloat('万剑齐发'); try { sfx('evo'); } catch (e) {}
+    for (let i = 0; i < n; i++){ const a = off + i / n * Math.PI * 2; line(P.x, P.y, a, 330 * area, 16, base * 1.2, 90, 'w');  }
+    emitUltArt('feng',P.x,P.y,330 * area,.6); flowFloat('万剑齐发'); try { sfx('evo'); } catch (e) {}
   } else if (t === 'kong'){
-    const r = 210 * area; aoe(P.x, P.y, r, base * 0.6, 160, 'g', { stun:0.8, slow:1.5 }); fx.push({ k:'ring', x:P.x, y:P.y, r, t:0, dur:0.5 });
+    const r = 210 * area; aoe(P.x, P.y, r, base * 0.6, 160, 'g', { stun:0.8, slow:1.5 }); emitUltArt(t,P.x,P.y,r,.5);
     flowFloat('镇压');
   } else if (t === 'hu'){
-    addShield(P.st.maxHp * (big ? 0.12 : 0.08), 0); const r = 140 * area; aoe(P.x, P.y, r, base * 0.9, 240, 'g'); fx.push({ k:'ring', x:P.x, y:P.y, r, t:0, dur:0.5 });
+    addShield(P.st.maxHp * (big ? 0.12 : 0.08), 0); const r = 140 * area; aoe(P.x, P.y, r, base * 0.9, 240, 'g'); emitUltArt(t,P.x,P.y,r,.5);
     flowFloat('金身');
   } else if (t === 'ling'){
-    FLOW.frenzyT = 5; recalc(); flowFloat('万灵齐啸');
+    FLOW.frenzyT = 5; recalc(); emitUltArt('ling',P.x,P.y,180 * area,.7); flowFloat('万灵齐啸');
   }
 }
 function procMix(){
   const m = FLOW.mix, r = 260 * P.st.area;
   aoe(P.x, P.y, r, procBase() * 1.6, 220, 'g', { stun:0.6 });
-  fx.push({ k:'ring', x:P.x, y:P.y, r, t:0, dur:0.6 }, { k:'ring', x:P.x, y:P.y, r:r * 0.6, t:0, dur:0.45 });
+  emitUltArt('mix',P.x,P.y,r,.6);
   heal(P.st.maxHp * m.heal, true); flowFloat('万象归一'); try { sfx('evo'); } catch (e) {}
 }
 const _kill161 = kill;

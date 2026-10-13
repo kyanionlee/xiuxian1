@@ -115,5 +115,15 @@
   "supply_seed": "assets/icon-supply-seed.webp",
   "weapon_bi": "assets/icon-weapon-bi.webp",
   "weapon_si": "assets/icon-weapon-si.webp",
-  "weapon_zhen": "assets/icon-weapon-zhen.webp"
+  "weapon_zhen": "assets/icon-weapon-zhen.webp",
+  "ult_jian": "src/assets/ult/icon-ult-jian.webp",
+  "ult_fa": "src/assets/ult/icon-ult-fa.webp",
+  "ult_ti": "src/assets/ult/icon-ult-ti.webp",
+  "ult_hun": "src/assets/ult/icon-ult-hun.webp",
+  "ult_yue": "src/assets/ult/icon-ult-yue.webp",
+  "ult_array": "src/assets/ult/icon-ult-array.webp",
+  "ult_fu": "src/assets/ult/icon-ult-fu.webp",
+  "ult_yushou": "src/assets/ult/icon-ult-yushou.webp",
+  "ult_kuilei": "src/assets/ult/icon-ult-kuilei.webp",
+  "ult_du": "src/assets/ult/icon-ult-du.webp"
 }

@@ -34,14 +34,15 @@ function castUlt(){
   const cls = P.cls in ULTS ? P.cls : 'jian', U = ULTS[cls], base = ultBase(), area = P.st.area;
   ULT.t = ultCd(); P.inv = Math.max(P.inv || 0, ULT.inv);
   banner(U.name); try { sfx('evo'); } catch (e) {} shake = Math.max(shake || 0, 8);
-  const ring = (r, dur = 0.6) => fx.push({ k:'ring', x:P.x, y:P.y, r, t:0, dur });
+  const ring = (r, dur = 0.6) => emitUltArt(cls, P.x, P.y, r, dur);
+  if (['jian','fa','array','fu'].includes(cls)) emitUltArt(cls,P.x,P.y,220 * area,.85);
   const near = (n, R) => enemies.filter(e => !e.dead && d2(e, P) < R * R).sort((a, b) => d2(a, P) - d2(b, P)).slice(0, n);
   if (cls === 'jian'){
-    for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2; line(P.x, P.y, a, 420 * area, 18, base * 1.4, 120, 'w'); fx.push({ k:'thrust', x:P.x, y:P.y, a, len:420 * area, w:18, t:0, dur:0.35 }); }
-    for (let i = 0; i < 8; i++){ const a = i / 8 * Math.PI * 2; strikes.push({ k:'thunder', x:P.x + Math.cos(a) * 170 * area, y:P.y + Math.sin(a) * 170 * area, r:80 * area, dmg:base * 1.2, t:0, delay:0.5, cat:'w', stun:false }); }
+    for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2; line(P.x, P.y, a, 420 * area, 18, base * 1.4, 120, 'w'); }
+    for (let i = 0; i < 8; i++){ const a = i / 8 * Math.PI * 2; strikes.push({ ultArt:cls, k:'thunder', x:P.x + Math.cos(a) * 170 * area, y:P.y + Math.sin(a) * 170 * area, r:80 * area, dmg:base * 1.2, t:0, delay:0.5, cat:'w', stun:false }); }
   } else if (cls === 'fa'){
     const tg = near(6, 520); while (tg.length < 6) tg.push({ x:P.x + rand(-260, 260), y:P.y + rand(-200, 200) });
-    tg.forEach((e, i) => { strikes.push({ k:'thunder', x:e.x, y:e.y, r:95 * area, dmg:base * 2.2, t:0, delay:0.45 + i * 0.12, cat:'g', stun:false }); zones.push({ x:e.x, y:e.y, r:70 * area, t:0, dur:3, tick:0, dmg:base * 0.25 }); });
+    tg.forEach((e, i) => { strikes.push({ ultArt:cls, k:'thunder', x:e.x, y:e.y, r:95 * area, dmg:base * 2.2, t:0, delay:0.45 + i * 0.12, cat:'g', stun:false }); zones.push({ x:e.x, y:e.y, r:70 * area, t:0, dur:3, tick:0, dmg:base * 0.25 }); });
   } else if (cls === 'ti'){
     const r = 230 * area; aoe(P.x, P.y, r, base * 2, 320, 'w', { stun:1.4 }); ring(r); ring(r * 0.6, 0.45);
     addShield(P.st.maxHp * 0.35, 0);
@@ -53,9 +54,9 @@ function castUlt(){
     [0, 0.35, 0.7].forEach((dl, i) => setTimeout(() => { if (state !== 'play' || STAGE !== s) return; const r = (160 + i * 90) * area; aoe(P.x, P.y, r, base * 1.1, 260, 'g', { slow:1.5 }); ring(r, 0.5); }, dl * 1000));
   } else if (cls === 'array'){
     const r = 260 * area; aoe(P.x, P.y, r, base * 0.6, 40, 'g', { stun:1.8 }); ring(r, 0.9);
-    for (let i = 0; i < 8; i++){ const a = i / 8 * Math.PI * 2; strikes.push({ k:'seal', x:P.x + Math.cos(a) * r * 0.6, y:P.y + Math.sin(a) * r * 0.6, r:90 * area, dmg:base * 1.5, t:0, delay:0.6, cat:'g', stun:true }); }
+    for (let i = 0; i < 8; i++){ const a = i / 8 * Math.PI * 2; strikes.push({ ultArt:cls, k:'seal', x:P.x + Math.cos(a) * r * 0.6, y:P.y + Math.sin(a) * r * 0.6, r:90 * area, dmg:base * 1.5, t:0, delay:0.6, cat:'g', stun:true }); }
   } else if (cls === 'fu'){
-    const tg = near(10, 600); tg.forEach((e, i) => strikes.push({ k:'thunder', x:e.x, y:e.y, r:70 * area, dmg:base * 2, t:0, delay:0.25 + i * 0.08, cat:'g', stun:true }));
+    const tg = near(10, 600); tg.forEach((e, i) => strikes.push({ ultArt:cls, k:'thunder', x:e.x, y:e.y, r:70 * area, dmg:base * 2, t:0, delay:0.25 + i * 0.08, cat:'g', stun:true }));
     if (!tg.length) ring(200 * area);
   } else if (cls === 'yushou' || cls === 'kuilei'){
     FLOW.frenzyT = Math.max(FLOW.frenzyT || 0, 8); ULT.pet = 8; recalc();

@@ -1,0 +1,245 @@
+{
+  "environment": "Playwright Chromium, D3D11 GPU rendering; mobile viewport simulation, not phone hardware",
+  "gpu": [
+    {
+      "vendorId": 4318,
+      "deviceId": 9479,
+      "subSysId": 2289438787,
+      "revision": 161,
+      "vendorString": "",
+      "deviceString": "NVIDIA GeForce RTX 3050",
+      "driverVendor": "NVIDIA",
+      "driverVersion": "32.0.15.9186"
+    },
+    {
+      "vendorId": 5140,
+      "deviceId": 140,
+      "subSysId": 0,
+      "revision": 0,
+      "vendorString": "",
+      "deviceString": "Microsoft Basic Render Driver",
+      "driverVendor": "",
+      "driverVersion": "10.0.26100.9278"
+    }
+  ],
+  "features": {
+    "2d_canvas": "enabled",
+    "direct_rendering_display_compositor": "disabled_off_ok",
+    "gpu_compositing": "enabled",
+    "multiple_raster_threads": "enabled_on",
+    "opengl": "enabled_on",
+    "rasterization": "enabled",
+    "raw_draw": "disabled_off_ok",
+    "skia_graphite": "disabled_off",
+    "trees_in_viz": "disabled_off",
+    "video_decode": "enabled",
+    "video_encode": "enabled",
+    "webgl": "enabled",
+    "webgpu": "enabled",
+    "webnn": "disabled_off"
+  },
+  "runs": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "mode": "vivid",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.3449999995296822,
+      "p95WorkMs": 1.9000000059604645,
+      "meanFrameMs": 17.082812499999996,
+      "p95FrameMs": 16.700000000000728,
+      "peakEffects": 40,
+      "peakParticles": 120,
+      "canvas": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "mode": "simple",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.315937499795109,
+      "p95WorkMs": 2,
+      "meanFrameMs": 16.9262,
+      "p95FrameMs": 16.799999999999955,
+      "peakEffects": 31,
+      "peakParticles": 0,
+      "canvas": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "mode": "perf",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.3965625001350417,
+      "p95WorkMs": 2.2999999970197678,
+      "meanFrameMs": 16.926459375,
+      "p95FrameMs": 16.700000000000728,
+      "peakEffects": 40,
+      "peakParticles": 0,
+      "canvas": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mode": "vivid",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.2851562502561138,
+      "p95WorkMs": 2,
+      "meanFrameMs": 16.926928125000003,
+      "p95FrameMs": 16.700000000000728,
+      "peakEffects": 40,
+      "peakParticles": 120,
+      "canvas": [
+        390,
+        844
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mode": "simple",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.2081250000977888,
+      "p95WorkMs": 1.6000000089406967,
+      "meanFrameMs": 16.926250000000003,
+      "p95FrameMs": 16.799999999999272,
+      "peakEffects": 31,
+      "peakParticles": 0,
+      "canvas": [
+        390,
+        844
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mode": "perf",
+      "casts": 10,
+      "classes": [
+        "jian",
+        "fa",
+        "ti",
+        "hun",
+        "yue",
+        "array",
+        "fu",
+        "yushou",
+        "kuilei",
+        "du"
+      ],
+      "frames": 640,
+      "meanWorkMs": 1.288281249953434,
+      "p95WorkMs": 1.9000000059604645,
+      "meanFrameMs": 16.926981249999997,
+      "p95FrameMs": 16.799999999999272,
+      "peakEffects": 40,
+      "peakParticles": 0,
+      "canvas": [
+        390,
+        844
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "gameplayEquivalentCases": 15
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "gameplayEquivalentCases": 15
+    }
+  ]
+}

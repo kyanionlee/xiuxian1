@@ -109,48 +109,23 @@ if (typeof executeBoss === 'function'){
   executeBoss = function(e, a, ...rest){
     try {
       const col = e.enraged ? '#ff4d3d' : ({ fox:'#ffaf69', drought:'#ff7a3d', wuchang:'#c4a1ff', demon:'#b07cff', bear:'#d9a35b', general:'#e6c879' })[e.pattern] || '#ff8a5b';
-      BFX.push({ ...a, spots:a.spots ? a.spots.map(p => ({ ...p })) : null, ex:e.x, ey:e.y, col, t:0, dur:0.7 });
+      BFX.push({ artSeq:++ULT_ART.seq, ...a, spots:a.spots ? a.spots.map(p => ({ ...p })) : null, ex:e.x, ey:e.y, col, t:0, dur:0.7 });
       if (BFX.length > 12) BFX.shift();
       shake = Math.max(shake || 0, a.shape === 'fan' || a.shape === 'summon' ? 3 : 7);
-      const sparks = (x, y, n, sp) => { for (let i = 0; i < n && fx.length < 400; i++){ const g = Math.random() * 7; fx.push({ k:'spark', x, y, vx:Math.cos(g) * rand(60, sp), vy:Math.sin(g) * rand(60, sp), t:0, dur:0.5 }); } };
-      if (a.shape === 'circle' || a.shape === 'ring') sparks(a.x, a.y, 18, 260);
-      else if (a.shape === 'line') for (let i = 0; i <= 6; i++) sparks(a.x + Math.cos(a.angle) * a.len * i / 6, a.y + Math.sin(a.angle) * a.len * i / 6, 3, 180);
-      else if (a.shape === 'meteors') for (const p of a.spots || []) sparks(p.x, p.y, 10, 220);
+      // Particles are drawn procedurally by drawBossArt within the shared 120 budget.
       if (texts.length < 90) texts.push({ x:e.x, y:e.y - (e.r || 36) - 26, v:a.label || '妖术', t:0, crit:true });
     } catch (err) {}
     return _exec162(e, a, ...rest);
   };
 }
 function drawBFX(){
-  const c = ctx, camX = P.x - W / 2, camY = P.y - H / 2;
-  c.save(); c.setTransform(DPR, 0, 0, DPR, -camX * DPR, -camY * DPR);
-  for (const f of BFX){
-    const k = f.t / f.dur, fade = 1 - k; c.strokeStyle = f.col; c.fillStyle = f.col;
-    if (f.shape === 'circle' || f.shape === 'ring'){
-      c.globalAlpha = 0.35 * fade; c.beginPath(); c.arc(f.x, f.y, f.r, 0, 7); if (f.shape === 'ring') c.arc(f.x, f.y, f.inner, 0, 7, true); c.fill('evenodd');
-      c.globalAlpha = 0.9 * fade; c.lineWidth = 6 * fade + 1; c.beginPath(); c.arc(f.x, f.y, f.r * (0.6 + 0.6 * k), 0, 7); c.stroke();
-      c.lineWidth = 2; c.beginPath(); c.arc(f.x, f.y, f.r * (0.3 + 0.9 * k), 0, 7); c.stroke();
-    } else if (f.shape === 'line' || f.shape === 'cross'){
-      const beams = f.shape === 'line' ? [[f.x, f.y, f.angle, f.len]] : [[f.x - f.len / 2, f.y, 0, f.len], [f.x, f.y - f.len / 2, Math.PI / 2, f.len]];
-      for (const [x, y, ang, len] of beams){
-        c.save(); c.translate(x, y); c.rotate(ang);
-        c.globalAlpha = 0.45 * fade; c.fillRect(0, -f.w / 2 * (1 + k * 0.4), len, f.w * (1 + k * 0.4));
-        c.globalAlpha = 0.95 * fade; c.fillStyle = '#fff6dc'; c.fillRect(0, -f.w * 0.12, len, f.w * 0.24); c.fillStyle = f.col;
-        c.restore();
-      }
-    } else if (f.shape === 'meteors'){
-      for (const p of f.spots || []){
-        if (k < 0.3){ const q = k / 0.3; c.globalAlpha = 0.9; c.lineWidth = 6; c.beginPath(); c.moveTo(p.x - 120 * (1 - q), p.y - 220 * (1 - q)); c.lineTo(p.x - 120 * (1 - q) + 30, p.y - 220 * (1 - q) + 55); c.stroke(); }
-        else { const q = (k - 0.3) / 0.7; c.globalAlpha = 0.5 * (1 - q); c.beginPath(); c.arc(p.x, p.y, f.r * (0.5 + q), 0, 7); c.fill(); c.globalAlpha = 0.9 * (1 - q); c.lineWidth = 3; c.stroke(); }
-      }
-    } else {
-      c.globalAlpha = 0.7 * fade; c.lineWidth = 4; c.beginPath(); c.arc(f.ex, f.ey, 40 + 120 * k, 0, 7); c.stroke();
-    }
-  }
-  // 狂暴首领的红色气焰
-  for (const e of enemies){ if (e.dead || !e.enraged) continue; const p = 0.5 + 0.5 * Math.sin(performance.now() / 120);
-    c.globalAlpha = 0.25 + 0.2 * p; c.strokeStyle = '#ff4d3d'; c.lineWidth = 4; c.beginPath(); c.arc(e.x, e.y, (e.r || 36) + 10 + 6 * p, 0, 7); c.stroke(); }
-  c.restore(); c.globalAlpha = 1;
+  const c=ctx,camX=P.x-W/2,camY=P.y-H/2;
+  c.save();c.setTransform(DPR,0,0,DPR,-camX*DPR,-camY*DPR);
+  for(const f of BFX){if(ULT_ART.left--<=0)break;drawBossArt(f);}
+  // Persistent enrage status stays readable; no transient particles or blur.
+  c.strokeStyle='#ff7665';c.lineWidth=2;c.globalAlpha=.65;
+  for(const e of enemies){if(e.dead||!e.enraged)continue;c.beginPath();c.moveTo(e.x-10,e.y-e.r-12);c.lineTo(e.x,e.y-e.r-22);c.lineTo(e.x+10,e.y-e.r-12);c.stroke();}
+  c.restore();
 }
 const _draw162 = draw;
 draw = function(...a){
